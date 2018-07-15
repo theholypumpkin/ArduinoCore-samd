@@ -180,6 +180,15 @@ public:
 	inline void epBank0EnableAutoZLP(ep_t ep)  { EP[ep].DeviceDescBank[0].PCKSIZE.bit.AUTO_ZLP = 1; }
 	inline void epBank1EnableAutoZLP(ep_t ep)  { EP[ep].DeviceDescBank[1].PCKSIZE.bit.AUTO_ZLP = 1; }
 
+	// USB Device Endpoint transactions helpers
+	// ----------------------------------------
+
+	inline void epReleaseOutBank0(ep_t ep, uint16_t s) {
+		epBank0SetMultiPacketSize(ep, s);
+		epBank0SetByteCount(ep, 0);
+		epBank0ResetReady(ep);
+	}
+
 private:
 	// USB Device registers
 	UsbDevice &usb;
@@ -243,6 +252,7 @@ public:
 		usbd.epBank0SetType(ep, 3); // BULK OUT
 
 		usbd.epBank0SetAddress(ep, const_cast<uint8_t *>(data0));
+		usbd.epBank0EnableTransferComplete(ep);
 
 		release();
 	}
@@ -394,11 +404,7 @@ public:
 	}
 
 	void release() {
-		// Release OUT EP
-		usbd.epBank0EnableTransferComplete(ep);
-		usbd.epBank0SetMultiPacketSize(ep, size);
-		usbd.epBank0SetByteCount(ep, 0);
-		usbd.epBank0ResetReady(ep);
+		usbd.epReleaseOutBank0(ep, size);
 	}
 
 private:
