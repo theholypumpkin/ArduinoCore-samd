@@ -297,22 +297,23 @@ void USBDeviceClass::standby() {
 void USBDeviceClass::handleEndpoint(uint8_t ep)
 {
 #if defined(CDC_ENABLED)
-	if (ep == CDC_ENDPOINT_IN)
+	if (ep == CDC_ENDPOINT_IN || ep == CDC_ENDPOINT_ACM)
 	{
-		// NAK on endpoint IN, the bank is not yet filled in.
-		usbd.epBank1ResetReady(CDC_ENDPOINT_IN);
-		usbd.epBank1AckTransferComplete(CDC_ENDPOINT_IN);
-	}
-	if (ep == CDC_ENDPOINT_ACM)
-	{
-		// NAK on endpoint IN, the bank is not yet filled in.
-		usbd.epBank1ResetReady(CDC_ENDPOINT_ACM);
-		usbd.epBank1AckTransferComplete(CDC_ENDPOINT_ACM);
+		if (usbd.epBank0IsTransferComplete(ep) || usbd.epBank1IsTransferComplete(ep)) {
+			// NAK on endpoint IN, the bank is not yet filled in.
+			usbd.epBank1ResetReady(ep);
+			usbd.epBank1AckTransferComplete(ep);
+		}
+		return;
 	}
 #endif
 
 #if defined(PLUGGABLE_USB_ENABLED)
-	// Empty
+	int r = PluggableUSB().handleEndpoint(ep);
+	if (r != 0) {
+		usbd.epAckPendingInterrupts(ep);
+		return;
+	}
 #endif
 }
 
@@ -1010,29 +1011,17 @@ void USBDeviceClass::ISRHandler()
 		}
 
 	} // end Received Setup handler
+	// usbd.epAckPendingInterrupts(0);
 
-	uint8_t i=0;
-	uint8_t ept_int = usbd.epInterruptSummary() & 0xFE; // Remove endpoint number 0 (setup)
-	while (ept_int != 0)
-	{
-		// Check if endpoint has a pending interrupt
-		if ((ept_int & (1 << i)) != 0)
-		{
-			// Endpoint Transfer Complete (0/1) Interrupt
-			if (usbd.epBank0IsTransferComplete(i) ||
-			    usbd.epBank1IsTransferComplete(i))
-			{
-				if (epHandlers[i]) {
-					epHandlers[i]->handleEndpoint();
-				} else {
-					handleEndpoint(i);
-				}
+	for (int ep = 1; ep < USB_EPT_NUM; ep++) {
+		// Endpoint Transfer Complete (0/1) Interrupt
+		if (usbd.epHasPendingInterrupts(ep)) {
+			if (epHandlers[ep]) {
+				epHandlers[ep]->handleEndpoint();
+			} else {
+				handleEndpoint(ep);
 			}
-			ept_int &= ~(1 << i);
 		}
-		i++;
-		if (i > USB_EPT_NUM)
-			break;  // fire exit
 	}
 }
 

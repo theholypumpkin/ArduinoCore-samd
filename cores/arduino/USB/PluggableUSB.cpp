@@ -70,6 +70,7 @@ uint8_t PluggableUSB_::getShortName(char *iSerialNum)
 bool PluggableUSB_::setup(USBSetup& setup)
 {
 	PluggableUSBModule* node;
+
 	for (node = rootNode; node; node = node->next) {
 		if (node->setup(setup)) {
 			return true;
@@ -78,12 +79,16 @@ bool PluggableUSB_::setup(USBSetup& setup)
 	return false;
 }
 
-void PluggableUSB_::handleEndpoint(int ep)
+int PluggableUSB_::handleEndpoint(int ep)
 {
 	PluggableUSBModule* node;
 	for (node = rootNode; node; node = node->next) {
-		node->handleEndpoint(ep);
+		int r = node->handleEndpoint(ep);
+		if (r != 0) {
+			return r;
+		}
 	}
+	return 0;
 }
 
 bool PluggableUSB_::plug(PluggableUSBModule *node)

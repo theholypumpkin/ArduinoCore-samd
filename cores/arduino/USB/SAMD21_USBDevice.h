@@ -393,7 +393,9 @@ public:
 			}
 			release();
 		}
-		usbd.epAckPendingInterrupts(ep);
+		if (usbd.epBank0IsTransferComplete(ep) || usbd.epBank1IsTransferComplete(ep)) {
+			usbd.epAckPendingInterrupts(ep);
+		}
 	}
 
 	// Returns how many bytes are stored in the buffers
