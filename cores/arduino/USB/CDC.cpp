@@ -139,6 +139,16 @@ bool CDC_Setup(USBSetup &setup)
 	return false;
 }
 
+/*
+Serial_::Serial_(USBDeviceClass &_usb) : PluggableUSBModule(3, 2, epType), usb(_usb), stalled(false)
+{
+  epType[0] = USB_ENDPOINT_TYPE_INTERRUPT | USB_ENDPOINT_IN(0);
+  epType[1] = USB_ENDPOINT_TYPE_BULK | USB_ENDPOINT_OUT(0);
+  epType[2] = USB_ENDPOINT_TYPE_BULK | USB_ENDPOINT_IN(0);
+  PluggableUSB().plug(this);
+}
+*/
+
 void Serial_::begin(uint32_t /* baud_count */)
 {
 	// uart config is ignored in USB-CDC
