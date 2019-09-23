@@ -12,7 +12,7 @@ In particular, this adds support for the Adafruit SAMD Boards such as the Feathe
 
 If you find a bug you can submit an issue here on github:
 
-https://github.com/adafruit/ArduinoCore-samd
+https://github.com/Seeed-Studio/ArduinoCore-samd
 
 or if it is an issue with the upstream:
 
