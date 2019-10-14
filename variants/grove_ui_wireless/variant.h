@@ -336,7 +336,7 @@ static const uint8_t SCK2  = PIN_SPI2_SCK;
 #define ESP32_GPIO18        (85u)
 
 //MIC
-#define MIC_OUTPUT          (92u)
+#define MIC_INPUT          (92u)
 
 
 
