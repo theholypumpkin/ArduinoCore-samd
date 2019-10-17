@@ -150,7 +150,11 @@ void init( void )
 	DAC->CTRLA.bit.SWRST = 1;
 	while ( DAC->SYNCBUSY.bit.SWRST == 1 ); // Wait for synchronization of registers between the clock domains
 	
-	DAC->CTRLB.reg = DAC_CTRLB_REFSEL_VREFPU; // TODO: fix this once silicon bug is fixed
+  #ifdef VREFLESS
+	DAC->CTRLB.reg = DAC_CTRLB_REFSEL_INTREF; // TODO: fix this once silicon bug is fixed
+  #else
+  DAC->CTRLB.reg = DAC_CTRLB_REFSEL_VREFPU;
+  #endif
 	
 	//set refresh rates
 	DAC->DACCTRL[0].bit.REFRESH = 2;

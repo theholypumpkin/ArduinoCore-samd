@@ -77,7 +77,7 @@ seeed_grove_ui_wireless.build.usb_product="Seeed Grove UI Wireles"
 seeed_grove_ui_wireless.build.usb_manufacturer="Seeed Studio"
 seeed_grove_ui_wireless.build.board=GROVE_UI_WIRELESS
 seeed_grove_ui_wireless.build.core=arduino
-seeed_grove_ui_wireless.build.extra_flags=-D__SAMD51P19A__ -DSEEED_GROVE_UI_WIRELESS -D__SAMD51__ {build.usb_flags} -D__FPU_PRESENT -DARM_MATH_CM4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
+seeed_grove_ui_wireless.build.extra_flags=-DVREFLESS -D__SAMD51P19A__ -DSEEED_GROVE_UI_WIRELESS -D__SAMD51__ {build.usb_flags} -D__FPU_PRESENT -DARM_MATH_CM4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
 seeed_grove_ui_wireless.build.ldscript=linker_scripts/gcc/flash_with_bootloader.ld
 seeed_grove_ui_wireless.build.openocdscript=openocd_scripts/arduino_zero.cfg
 seeed_grove_ui_wireless.build.variant=grove_ui_wireless
