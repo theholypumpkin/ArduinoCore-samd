@@ -90,6 +90,68 @@ extern "C"
 #define LED_BUILTIN          PIN_LED_13
 #define PIN_NEOPIXEL         (13u)
 
+// Digital pins
+#define PIN_D0               (0ul)
+#define PIN_D1               (PIN_D0 + 1)
+#define PIN_D2               (PIN_D0 + 2)
+#define PIN_D3               (PIN_D0 + 3)
+#define PIN_D4               (PIN_D0 + 4)
+#define PIN_D5               (PIN_D0 + 5)
+#define PIN_D6               (PIN_D0 + 6)
+#define PIN_D7               (PIN_D0 + 7)
+#define PIN_D8               (PIN_D0 + 8)
+#define PIN_D9               (PIN_D0 + 9)
+
+// Extern Digital pins
+#define PIN_D10               (47ul)
+#define PIN_D11               (49ul)
+#define PIN_D12               (59ul)
+#define PIN_D13               (61ul)
+#define PIN_D14               (62ul)
+#define PIN_D15               (57ul)
+#define PIN_D16               (11ul)
+#define PIN_D17               (29ul)
+#define PIN_D18               (31ul)
+#define PIN_D19               (46ul)
+#define PIN_D20               (48ul)
+#define PIN_D21               (58ul)
+#define PIN_D22               (60ul)
+#define PIN_D23               (63ul)
+#define PIN_D24               (56ul)
+#define PIN_D25               (12ul)
+#define PIN_D26               (28ul)
+#define PIN_D27               (30ul)
+
+static const uint8_t D0  = PIN_D0;
+static const uint8_t D1  = PIN_D1;
+static const uint8_t D2  = PIN_D2;
+static const uint8_t D3  = PIN_D3;
+static const uint8_t D4  = PIN_D4;
+static const uint8_t D5  = PIN_D5;
+static const uint8_t D6  = PIN_D6;
+static const uint8_t D7  = PIN_D7;
+static const uint8_t D8  = PIN_D8;
+static const uint8_t D9  = PIN_D9;
+static const uint8_t D10  = PIN_D10;
+static const uint8_t D11  = PIN_D11;
+static const uint8_t D12  = PIN_D12;
+static const uint8_t D13  = PIN_D13;
+static const uint8_t D14  = PIN_D14;
+static const uint8_t D15  = PIN_D15;
+static const uint8_t D16  = PIN_D16;
+static const uint8_t D17  = PIN_D17;
+static const uint8_t D18  = PIN_D18;
+static const uint8_t D19  = PIN_D19;
+static const uint8_t D20  = PIN_D20;
+static const uint8_t D21  = PIN_D21;
+static const uint8_t D22  = PIN_D22;
+static const uint8_t D23  = PIN_D23;
+static const uint8_t D24  = PIN_D24;
+static const uint8_t D25  = PIN_D25;
+static const uint8_t D26  = PIN_D26;
+static const uint8_t D27  = PIN_D27;
+
+
 /*
  * Analog pins
  */
@@ -113,10 +175,10 @@ static const uint8_t A2  = PIN_A2;
 static const uint8_t A3  = PIN_A3;
 static const uint8_t A4  = PIN_A4;
 static const uint8_t A5  = PIN_A5;
-static const uint8_t A6  = PIN_A6 ;
-static const uint8_t A7  = PIN_A7 ;
-static const uint8_t A8  = PIN_A8 ;
-static const uint8_t A9  = PIN_A9 ;
+static const uint8_t A6  = PIN_A6;
+static const uint8_t A7  = PIN_A7;
+static const uint8_t A8  = PIN_A8;
+static const uint8_t A9  = PIN_A9;
 
 static const uint8_t DAC0 = PIN_DAC0;
 static const uint8_t DAC1 = PIN_DAC1;
