@@ -57,7 +57,7 @@ extern "C"
  *----------------------------------------------------------------------------*/
 
 // Number of pins defined in PinDescription array
-#define PINS_COUNT           (96u)
+#define PINS_COUNT           (97u)
 #define NUM_DIGITAL_PINS     (34u)
 #define NUM_ANALOG_INPUTS    (10u)
 #define NUM_ANALOG_OUTPUTS   (2u)
@@ -311,7 +311,7 @@ static const uint8_t SCK2  = PIN_SPI2_SCK;
 
 //extra pin define
 //Buzzer
-#define BUZZER_CTR          (73u)
+#define BUZZER_CTR          (96u)
 
 //ESP32
 #define ESP32_GPIO4         (64u)
