@@ -158,13 +158,50 @@ Seeed_femto_m0.build.variant_system_lib=
 Seeed_femto_m0.build.vid=0x2886
 Seeed_femto_m0.build.pid=0x802C
 Seeed_femto_m0.bootloader.tool=openocd
-Seeed_femto_m0.bootloader.file=circuitplayM0/bootloader-femto_m0-v3.7.0-31-seeeduino.bin
+Seeed_femto_m0.bootloader.file=femtoM0/bootloader-femto_m0-v3.7.0-31-seeeduino.bin
 Seeed_femto_m0.menu.usbstack.arduino=Arduino
 Seeed_femto_m0.menu.usbstack.tinyusb=TinyUSB
 Seeed_femto_m0.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
 Seeed_femto_m0.menu.debug.off=Off
 Seeed_femto_m0.menu.debug.on=On
 Seeed_femto_m0.menu.debug.on.build.flags.debug=-g
+
+# Seeed XIAO M0 (SAMD21)
+# ------------------------------
+seeed_XIAO_m0.name=Seeeduino XIAO M0
+seeed_XIAO_m0.vid.0=0x2886
+seeed_XIAO_m0.pid.0=0x802F
+seeed_XIAO_m0.vid.1=0x2886
+seeed_XIAO_m0.pid.1=0x002F
+seeed_XIAO_m0.upload.tool=bossac
+seeed_XIAO_m0.upload.protocol=sam-ba
+seeed_XIAO_m0.upload.maximum_size=262144
+seeed_XIAO_m0.upload.offset=0x2000
+seeed_XIAO_m0.upload.use_1200bps_touch=true
+seeed_XIAO_m0.upload.wait_for_upload_port=true
+seeed_XIAO_m0.upload.native_usb=true
+seeed_XIAO_m0.build.mcu=cortex-m0plus
+seeed_XIAO_m0.build.f_cpu=48000000L
+seeed_XIAO_m0.build.usb_product="Seeed femto M0"
+seeed_XIAO_m0.build.usb_manufacturer="Seeed"
+seeed_XIAO_m0.build.board=SEEED_XIAO_M0
+seeed_XIAO_m0.build.core=arduino
+seeed_XIAO_m0.build.extra_flags= -DARDUINO_SAMD_ZERO -D__SAMD21G18A__ -DARM_MATH_CM0PLUS -DSEEED_XIAO_M0 {build.usb_flags}
+seeed_XIAO_m0.build.ldscript=linker_scripts/gcc/flash_with_bootloader.ld
+seeed_XIAO_m0.build.openocdscript=openocd_scripts/XIAO_m0.cfg
+seeed_XIAO_m0.build.variant=XIAO_m0
+seeed_XIAO_m0.build.variant_system_lib=
+seeed_XIAO_m0.build.vid=0x2886
+seeed_XIAO_m0.build.pid=0x802F
+seeed_XIAO_m0.bootloader.tool=openocd
+seeed_XIAO_m0.bootloader.file=XIAOM0/bootloader-XIAO_m0-v3.7.0-31-seeeduino.bin
+seeed_XIAO_m0.menu.usbstack.arduino=Arduino
+seeed_XIAO_m0.menu.usbstack.tinyusb=TinyUSB
+seeed_XIAO_m0.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
+seeed_XIAO_m0.menu.debug.off=Off
+seeed_XIAO_m0.menu.debug.on=On
+seeed_XIAO_m0.menu.debug.on.build.flags.debug=-g
+
 
 # Seeed Grove UI Wireless (SAMD51)
 # ------------------------------
