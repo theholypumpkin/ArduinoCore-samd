@@ -99,11 +99,11 @@ DefaultDestDir=12
 %wioBle.sketch.name%=DriverInstall, USB\VID_2886&PID_802A&MI_00
 %wioBle.bootloader.name%=DriverInstall, USB\VID_2886&PID_002A
 %femto.sketch.name%=DriverInstall, USB\VID_2886&PID_802C&MI_00
-%femto.bootloader.name%=DriverInstall, USB\VID_2886&PID_002C
+%femto.bootloader.name%=DriverInstall, USB\VID_2886&PID_002C&MI_00
 %groveUIWireless.sketch.name%=DriverInstall, USB\VID_2886&PID_802D&MI_00
-%groveUIWireless.bootloader.name%=DriverInstall, USB\VID_2886&PID_002D
+%groveUIWireless.bootloader.name%=DriverInstall, USB\VID_2886&PID_002D&MI_00
 %XIAO.sketch.name%=DriverInstall, USB\VID_2886&PID_802F&MI_00
-%XIAO.bootloader.name%=DriverInstall, USB\VID_2886&PID_002F
+%XIAO.bootloader.name%=DriverInstall, USB\VID_2886&PID_002F&MI_00
 
 [DeviceList.NTamd64]
 %clio.sketch.name%=DriverInstall, USB\VID_2886&PID_8001&MI_00
@@ -140,11 +140,11 @@ DefaultDestDir=12
 %wioBle.sketch.name%=DriverInstall, USB\VID_2886&PID_802A&MI_00
 %wioBle.bootloader.name%=DriverInstall, USB\VID_2886&PID_002A
 %femto.sketch.name%=DriverInstall, USB\VID_2886&PID_802C&MI_00
-%femto.bootloader.name%=DriverInstall, USB\VID_2886&PID_002C
+%femto.bootloader.name%=DriverInstall, USB\VID_2886&PID_002C&MI_00
 %groveUIWireless.sketch.name%=DriverInstall, USB\VID_2886&PID_802D&MI_00
-%groveUIWireless.bootloader.name%=DriverInstall, USB\VID_2886&PID_002D
+%groveUIWireless.bootloader.name%=DriverInstall, USB\VID_2886&PID_002D&MI_00
 %XIAO.sketch.name%=DriverInstall, USB\VID_2886&PID_802F&MI_00
-%XIAO.bootloader.name%=DriverInstall, USB\VID_2886&PID_002F
+%XIAO.bootloader.name%=DriverInstall, USB\VID_2886&PID_002F&MI_00
 
 [DeviceList.NTia64]
 %clio.sketch.name%=DriverInstall, USB\VID_2886&PID_8001&MI_00
@@ -181,11 +181,11 @@ DefaultDestDir=12
 %wioBle.sketch.name%=DriverInstall, USB\VID_2886&PID_802A&MI_00
 %wioBle.bootloader.name%=DriverInstall, USB\VID_2886&PID_002A
 %femto.sketch.name%=DriverInstall, USB\VID_2886&PID_802C&MI_00
-%femto.bootloader.name%=DriverInstall, USB\VID_2886&PID_002C
+%femto.bootloader.name%=DriverInstall, USB\VID_2886&PID_002C&MI_00
 %groveUIWireless.sketch.name%=DriverInstall, USB\VID_2886&PID_802D&MI_00
-%groveUIWireless.bootloader.name%=DriverInstall, USB\VID_2886&PID_002D
+%groveUIWireless.bootloader.name%=DriverInstall, USB\VID_2886&PID_002D&MI_00
 %XIAO.sketch.name%=DriverInstall, USB\VID_2886&PID_802F&MI_00
-%XIAO.bootloader.name%=DriverInstall, USB\VID_2886&PID_002F
+%XIAO.bootloader.name%=DriverInstall, USB\VID_2886&PID_002F&MI_00
 
 [DriverInstall]
 include=mdmcpq.inf,usb.inf
