@@ -253,6 +253,8 @@ static const uint8_t SCL1 = PIN_WIRE1_SCL;
 #define GYROSCOPE_ADC1               (93u)
 #define GYROSCOPE_ADC2               (94u)
 #define GYROSCOPE_ADC3               (95u)
+#define GYROSCOPE_INT1               EXT_5
+#define GYROSCOPE_INT2               EXT_8
 
 /*
  * SPI Interfaces
