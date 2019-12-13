@@ -24,6 +24,27 @@
 void initVariant() __attribute__((weak));
 void initVariant() { }
 
+/*
+ * _real_body(),_wrap_body() is a compiler trick,
+ * user could overwrite the arduino setup/loop function by re-implement _wrap_body(),
+ * calling of _real_body() in _wrap_body() is optional.
+ */
+void _real_body(){
+  setup();
+
+  for (;;)
+  {
+    loop();
+    yield(); // yield run usb background task
+
+    if (serialEventRun) serialEventRun();
+  }
+}
+
+void __attribute__((weak)) _wrap_body(){
+  _real_body();
+}
+
 // Initialize C library
 extern "C" void __libc_init_array(void);
 
@@ -46,16 +67,6 @@ int main( void )
   USBDevice.init();
   USBDevice.attach();
 #endif
-
-  setup();
-
-  for (;;)
-  {
-    loop();
-    yield(); // yield run usb background task
-
-    if (serialEventRun) serialEventRun();
-  }
-
+  _wrap_body();
   return 0;
 }
