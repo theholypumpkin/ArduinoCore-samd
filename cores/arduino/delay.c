@@ -87,8 +87,7 @@ void delayMicroseconds(unsigned int us)
 }
 #endif
 
-
-void delay( unsigned long ms )
+void _real_delay( unsigned long ms )
 {
   if (ms == 0)
   {
@@ -107,6 +106,11 @@ void delay( unsigned long ms )
     }
   }
 }
+
+/*
+ * override this delay() when run RTOS
+ */
+void delay( unsigned long ms ) __attribute__ ((weak, alias("_real_delay")));
 
 #include "Reset.h" // for tickReset()
 
