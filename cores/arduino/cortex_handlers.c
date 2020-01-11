@@ -459,7 +459,8 @@ __attribute__ ((section(".isr_vector"))) const DeviceVectors exception_table =
 
 #endif
 
-extern int main(void);
+/* GCC crt0 _start() will initialize C library then call main() */
+extern int _start(void);
 
 /* This is called on processor reset to initialize the device and call main() */
 void Reset_Handler(void)
@@ -490,7 +491,7 @@ void Reset_Handler(void)
 
   SystemInit();
 
-  main();
+  _start();
 
   while (1)
     ;
