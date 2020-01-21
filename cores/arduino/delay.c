@@ -18,6 +18,8 @@
 
 #include "delay.h"
 #include "Arduino.h"
+#include "sys/time.h"
+#include <time.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,6 +32,20 @@ unsigned long millis( void )
 {
 // todo: ensure no interrupts
   return _ulTickCount ;
+}
+
+int _gettimeofday(struct timeval* tv, void* timezone) {
+  static time_t timebase;
+  if (!timebase) {
+    struct tm ti[1] = {{0}};
+    ti->tm_year = 2020 - 1900;
+    ti->tm_mon = 1 - 1;
+    ti->tm_mday = 1;
+    timebase = mktime(ti);
+  }
+  tv->tv_sec = timebase + millis() / 1000UL;
+  tv->tv_usec = (millis() % 1000UL) * 1000UL;
+  return 0;
 }
 
 // Interrupt-compatible version of micros
