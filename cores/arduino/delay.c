@@ -34,16 +34,25 @@ unsigned long millis( void )
   return _ulTickCount ;
 }
 
+static volatile struct timeval timebase[1];
+
+int settimeofday(const struct timeval* tv, const struct timezone* tz) {
+  timebase->tv_usec = 0;
+  timebase->tv_sec  = tv->tv_sec - millis() / 1000UL;
+  return 0;
+}
+
 int _gettimeofday(struct timeval* tv, void* timezone) {
-  static time_t timebase;
-  if (!timebase) {
+  /*
+  if (!timebase->tv_sec) {
     struct tm ti[1] = {{0}};
     ti->tm_year = 2020 - 1900;
-    ti->tm_mon = 1 - 1;
-    ti->tm_mday = 1;
-    timebase = mktime(ti);
+    ti->tm_mon  =    1 - 1;
+    ti->tm_mday =    1 - 0;
+    timebase->tv_sec = mktime(ti);
   }
-  tv->tv_sec = timebase + millis() / 1000UL;
+  */
+  tv->tv_sec = timebase->tv_sec + millis() / 1000UL;
   tv->tv_usec = (millis() % 1000UL) * 1000UL;
   return 0;
 }
