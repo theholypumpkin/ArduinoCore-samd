@@ -166,8 +166,8 @@ extern SERCOM sercom5;
 
 // Serial1
 extern Uart Serial1;
-#define PIN_SERIAL1_RX       (6ul)
-#define PIN_SERIAL1_TX       (7ul)
+#define PIN_SERIAL1_TX       (6ul)
+#define PIN_SERIAL1_RX       (7ul)
 #define PAD_SERIAL1_TX       (UART_TX_PAD_0)
 #define PAD_SERIAL1_RX       (SERCOM_RX_PAD_1)
 #endif // __cplusplus
