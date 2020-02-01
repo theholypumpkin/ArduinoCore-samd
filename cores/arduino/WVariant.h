@@ -149,6 +149,8 @@ typedef enum _ETCChannel
   TCC1_CH1 = (1<<8)|(1),
   TCC1_CH2 = (1<<8)|(2),
   TCC1_CH3 = (1<<8)|(3),
+  TCC1_CH4 = (1<<8)|(4),
+  TCC1_CH5 = (1<<8)|(5),
   TCC2_CH0 = (2<<8)|(0),
   TCC2_CH1 = (2<<8)|(1),
   TCC2_CH2 = (2<<8)|(2),
