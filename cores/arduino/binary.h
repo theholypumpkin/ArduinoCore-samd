@@ -531,4 +531,39 @@
 #define B11111110 254
 #define B11111111 255
 
+enum {
+	BIT0 = (0x1UL << 0),
+	BIT1 = (0x1UL << 1),
+	BIT2 = (0x1UL << 2),
+	BIT3 = (0x1UL << 3),
+	BIT4 = (0x1UL << 4),
+	BIT5 = (0x1UL << 5),
+	BIT6 = (0x1UL << 6),
+	BIT7 = (0x1UL << 7),
+	BIT8 = (0x1UL << 8),
+	BIT9 = (0x1UL << 9),
+	BIT10 = (0x1UL << 10),
+	BIT11 = (0x1UL << 11),
+	BIT12 = (0x1UL << 12),
+	BIT13 = (0x1UL << 13),
+	BIT14 = (0x1UL << 14),
+	BIT15 = (0x1UL << 15),
+	BIT16 = (0x1UL << 16),
+	BIT17 = (0x1UL << 17),
+	BIT18 = (0x1UL << 18),
+	BIT19 = (0x1UL << 19),
+	BIT20 = (0x1UL << 20),
+	BIT21 = (0x1UL << 21),
+	BIT22 = (0x1UL << 22),
+	BIT23 = (0x1UL << 23),
+	BIT24 = (0x1UL << 24),
+	BIT25 = (0x1UL << 25),
+	BIT26 = (0x1UL << 26),
+	BIT27 = (0x1UL << 27),
+	BIT28 = (0x1UL << 28),
+	BIT29 = (0x1UL << 29),
+	BIT30 = (0x1UL << 30),
+	BIT31 = (0x1UL << 31),
+};
+
 #endif

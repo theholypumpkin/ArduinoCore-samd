@@ -32,6 +32,7 @@
 #define PROGMEM
 #define PGM_P  const char *
 #define PSTR(str) (str)
+#define FPSTR(s)  (s)
 
 #define _SFR_BYTE(n) (n)
 
@@ -49,6 +50,7 @@ typedef uint64_t prog_uint64_t;
 
 typedef const void* int_farptr_t;
 typedef const void* uint_farptr_t;
+typedef void* PGM_VOID_P;
 
 #define memchr_P(s, c, n) memchr((s), (c), (n))
 #define memcmp_P(s1, s2, n) memcmp((s1), (s2), (n))

@@ -175,12 +175,13 @@ SECTIONS
 
 	} > RAM
 
-	.bss :
+	.bss (NOLOAD):
 	{
 		. = ALIGN(4);
 		__bss_start__ = .;
 		*(.bss*)
 		*(COMMON)
+		*(COMMON*)
 		. = ALIGN(4);
 		__bss_end__ = .;
 	} > RAM

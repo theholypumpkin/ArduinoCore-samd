@@ -186,14 +186,16 @@ size_t Print::println(const Printable& x)
   return n;
 }
 
-void Print::printf(const char format[], ...)
+size_t Print::printf(const char format[], ...)
 {
+  size_t r;
   char buf[PRINTF_BUF];
   va_list ap;
   va_start(ap, format);
-  vsnprintf(buf, sizeof(buf), format, ap);
+  r = vsnprintf(buf, sizeof(buf), format, ap);
   write(buf);
   va_end(ap);
+  return r;
 }
 
 // Private Methods /////////////////////////////////////////////////////////////

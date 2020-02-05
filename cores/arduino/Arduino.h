@@ -97,6 +97,7 @@ void loop( void ) ;
 #undef abs
 #endif // abs
 
+/// conflict with STL min/max
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
 #define abs(x) ((x)>0?(x):-(x))
@@ -108,6 +109,15 @@ void loop( void ) ;
 
 #define interrupts() __enable_irq()
 #define noInterrupts() __disable_irq()
+#ifndef interruptsStatus
+static inline unsigned char __interruptsStatus(void) __attribute__((always_inline, unused));
+static inline unsigned char __interruptsStatus(void)
+{
+  // See http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0497a/CHDBIBGJ.html
+  return (__get_PRIMASK() ? 0 : 1);
+}
+#define interruptsStatus() __interruptsStatus()
+#endif
 
 #define lowByte(w) ((uint8_t) ((w) & 0xff))
 #define highByte(w) ((uint8_t) ((w) >> 8))
