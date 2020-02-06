@@ -10,16 +10,10 @@
 extern "C" {
 #endif
 
-// libnosys.a provides the symbols:
-//    _close
-//    _exit
-//    _fstat
-//    _isatty
-//    _lseek
-//    _read
-//    _write
-// Remove gcc linker option "--specs=nosys.specs"
+// libnosys.a provide all the symbols except _write
+// with gcc linker option "--specs=nosys.specs --wrap,_write"
 
+#if 0
 int _close (int fd) {
 	return 0;
 }
@@ -51,7 +45,14 @@ void _ttywrch(int ch) {
 }
 */
 
-int _write (int fd, const char *ptr, int len) {
+int _kill(void) {}
+
+int _getpid(void) {}
+#endif
+
+extern int __real__write (int fd, const char *ptr, int len);
+
+int __wrap__write (int fd, const char *ptr, int len) {
 	int i;
 
 	for (i = 0; i < len; i++) {
