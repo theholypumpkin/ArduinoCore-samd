@@ -21,6 +21,68 @@ menu.maxqspi=Max QSPI
 menu.usbstack=USB Stack
 menu.debug=Debug
 
+# Seeed Wio Terminal (SAMD51)
+# ------------------------------
+seeed_wio_terminal.name=Seeeduino Wio Terminal
+seeed_wio_terminal.vid.0=0x2886
+seeed_wio_terminal.pid.0=0x802D
+seeed_wio_terminal.vid.1=0x2886
+seeed_wio_terminal.pid.1=0x802D
+seeed_wio_terminal.upload.tool=bossac18
+seeed_wio_terminal.upload.protocol=sam-ba
+seeed_wio_terminal.upload.maximum_size=507904
+seeed_wio_terminal.upload.offset=0x4000
+seeed_wio_terminal.upload.use_1200bps_touch=true
+seeed_wio_terminal.upload.wait_for_upload_port=true
+seeed_wio_terminal.upload.native_usb=true
+seeed_wio_terminal.build.mcu=cortex-m4
+#seeed_wio_terminal.build.f_cpu=120000000L
+seeed_wio_terminal.build.usb_product="Seeed Wio Terminal"
+seeed_wio_terminal.build.usb_manufacturer="Seeed Studio"
+seeed_wio_terminal.build.board=WIO_TERMINAL
+seeed_wio_terminal.build.core=arduino
+seeed_wio_terminal.build.extra_flags=-DVREFLESS -D__SAMD51P19A__ -DWIO_TERMINAL -DSEEED_WIO_TERMINAL -DSEEED_GROVE_UI_WIRELESS -D__SAMD51__ {build.usb_flags} -D__FPU_PRESENT -DARM_MATH_CM4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
+seeed_wio_terminal.build.ldscript=linker_scripts/gcc/flash_with_bootloader.ld
+seeed_wio_terminal.build.openocdscript=openocd_scripts/arduino_zero.cfg
+seeed_wio_terminal.build.variant=wio_terminal
+seeed_wio_terminal.build.variant_system_lib=
+seeed_wio_terminal.build.vid=0x2886
+seeed_wio_terminal.build.pid=0x802D
+seeed_wio_terminal.bootloader.tool=openocd
+seeed_wio_terminal.bootloader.file=wio_terminal/bootloader-wio-terminal
+seeed_wio_terminal.compiler.arm.cmsis.ldflags="-L{build.variant.path}" -larm_cortexM4lf_math -mfloat-abi=hard -mfpu=fpv4-sp-d16
+seeed_wio_terminal.menu.cache.on=Enabled
+seeed_wio_terminal.menu.cache.on.build.cache_flags=-DENABLE_CACHE
+seeed_wio_terminal.menu.cache.off=Disabled
+seeed_wio_terminal.menu.cache.off.build.cache_flags=
+seeed_wio_terminal.menu.speed.120=120 MHz (standard)
+seeed_wio_terminal.menu.speed.120.build.f_cpu=120000000L
+seeed_wio_terminal.menu.speed.150=150 MHz (overclock)
+seeed_wio_terminal.menu.speed.150.build.f_cpu=150000000L
+seeed_wio_terminal.menu.speed.180=180 MHz (overclock)
+seeed_wio_terminal.menu.speed.180.build.f_cpu=180000000L
+seeed_wio_terminal.menu.speed.200=200 MHz (overclock)
+seeed_wio_terminal.menu.speed.200.build.f_cpu=200000000L
+seeed_wio_terminal.menu.opt.small=Small (-Os) (standard)
+seeed_wio_terminal.menu.opt.small.build.flags.optimize=-Os
+seeed_wio_terminal.menu.opt.fast=Fast (-O2)
+seeed_wio_terminal.menu.opt.fast.build.flags.optimize=-O2
+seeed_wio_terminal.menu.opt.faster=Faster (-O3)
+seeed_wio_terminal.menu.opt.faster.build.flags.optimize=-O3
+seeed_wio_terminal.menu.opt.fastest=Fastest (-Ofast)
+seeed_wio_terminal.menu.opt.fastest.build.flags.optimize=-Ofast
+seeed_wio_terminal.menu.opt.dragons=Here be dragons (-Ofast -funroll-loops)
+seeed_wio_terminal.menu.opt.dragons.build.flags.optimize=-Ofast -funroll-loops
+seeed_wio_terminal.menu.maxqspi.50=50 MHz (standard)
+seeed_wio_terminal.menu.maxqspi.50.build.flags.maxqspi=-DVARIANT_QSPI_BAUD_DEFAULT=50000000
+seeed_wio_terminal.menu.maxqspi.fcpu=CPU Speed / 2
+seeed_wio_terminal.menu.maxqspi.fcpu.build.flags.maxqspi=-DVARIANT_QSPI_BAUD_DEFAULT=({build.f_cpu})
+seeed_wio_terminal.menu.usbstack.arduino=Arduino
+seeed_wio_terminal.menu.usbstack.tinyusb=TinyUSB
+seeed_wio_terminal.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
+seeed_wio_terminal.menu.debug.off=Off
+seeed_wio_terminal.menu.debug.on=On
+seeed_wio_terminal.menu.debug.on.build.flags.debug=-g
 
 # Seeed Femto M0 (SAMD21)
 # ------------------------------
@@ -208,9 +270,9 @@ rolawan.menu.debug.on.build.flags.debug=-g
 # ------------------------------
 seeed_grove_ui_wireless.name=Seeeduino Grove UI Wireles (SAMD51)
 seeed_grove_ui_wireless.vid.0=0x2886
-seeed_grove_ui_wireless.pid.0=0x802D
+seeed_grove_ui_wireless.pid.0=0x0000
 seeed_grove_ui_wireless.vid.1=0x2886
-seeed_grove_ui_wireless.pid.1=0x802D
+seeed_grove_ui_wireless.pid.1=0x0000
 seeed_grove_ui_wireless.upload.tool=bossac18
 seeed_grove_ui_wireless.upload.protocol=sam-ba
 seeed_grove_ui_wireless.upload.maximum_size=507904
@@ -230,7 +292,7 @@ seeed_grove_ui_wireless.build.openocdscript=openocd_scripts/arduino_zero.cfg
 seeed_grove_ui_wireless.build.variant=grove_ui_wireless
 seeed_grove_ui_wireless.build.variant_system_lib=
 seeed_grove_ui_wireless.build.vid=0x2886
-seeed_grove_ui_wireless.build.pid=0x802D
+seeed_grove_ui_wireless.build.pid=0x0000
 seeed_grove_ui_wireless.bootloader.tool=openocd
 seeed_grove_ui_wireless.bootloader.file=groveUIWireless/bootloader-groveUIWireless_m4-v3.7.0-Seeed.bin
 seeed_grove_ui_wireless.compiler.arm.cmsis.ldflags="-L{build.variant.path}" -larm_cortexM4lf_math -mfloat-abi=hard -mfpu=fpv4-sp-d16
