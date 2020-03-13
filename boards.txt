@@ -86,7 +86,7 @@ seeed_wio_terminal.menu.debug.on.build.flags.debug=-g
 
 # Seeed Femto M0 (SAMD21)
 # ------------------------------
-Seeed_femto_m0.name=Seeeduino Femto M0
+Seeed_femto_m0.name=Seeeduino Femto
 Seeed_femto_m0.vid.0=0x2886
 Seeed_femto_m0.pid.0=0x802C
 Seeed_femto_m0.vid.1=0x2886
@@ -104,7 +104,7 @@ Seeed_femto_m0.build.usb_product="Seeed femto M0"
 Seeed_femto_m0.build.usb_manufacturer="Seeed"
 Seeed_femto_m0.build.board=SEEED_FEMTO_M0
 Seeed_femto_m0.build.core=arduino
-Seeed_femto_m0.build.extra_flags=-DCRYSTALLESS -DARDUINO_SAMD_ZERO -D__SAMD21G18A__ -DARM_MATH_CM0PLUS -DSEEED_FEMTO_M0 {build.usb_flags}
+Seeed_femto_m0.build.extra_flags=-DCRYSTALLESS -D__SAMD21__ -DARDUINO_SAMD_ZERO -D__SAMD21G18A__ -DARM_MATH_CM0PLUS -DSEEED_FEMTO_M0 {build.usb_flags}
 Seeed_femto_m0.build.ldscript=linker_scripts/gcc/flash_with_bootloader.ld
 Seeed_femto_m0.build.openocdscript=openocd_scripts/femto_m0.cfg
 Seeed_femto_m0.build.variant=femto_m0
@@ -122,7 +122,7 @@ Seeed_femto_m0.menu.debug.on.build.flags.debug=-g
 
 # Seeed XIAO M0 (SAMD21)
 # ------------------------------
-seeed_XIAO_m0.name=Seeeduino XIAO M0
+seeed_XIAO_m0.name=Seeeduino XIAO
 seeed_XIAO_m0.vid.0=0x2886
 seeed_XIAO_m0.pid.0=0x802F
 seeed_XIAO_m0.vid.1=0x2886
@@ -140,7 +140,7 @@ seeed_XIAO_m0.build.usb_product="Seeed XIAO M0"
 seeed_XIAO_m0.build.usb_manufacturer="Seeed"
 seeed_XIAO_m0.build.board=SEEED_XIAO_M0
 seeed_XIAO_m0.build.core=arduino
-seeed_XIAO_m0.build.extra_flags= -DARDUINO_SAMD_ZERO -D__SAMD21G18A__ -DARM_MATH_CM0PLUS -DSEEED_XIAO_M0 {build.usb_flags}
+seeed_XIAO_m0.build.extra_flags= -DARDUINO_SAMD_ZERO -D__SAMD21__ -D__SAMD21G18A__ -DARM_MATH_CM0PLUS -DSEEED_XIAO_M0 {build.usb_flags}
 seeed_XIAO_m0.build.ldscript=linker_scripts/gcc/flash_with_bootloader.ld
 seeed_XIAO_m0.build.openocdscript=openocd_scripts/XIAO_m0.cfg
 seeed_XIAO_m0.build.variant=XIAO_m0
@@ -177,7 +177,7 @@ WioGPS.build.usb_product="Wio GPS Board"
 WioGPS.build.usb_manufacturer="Seeed Studio"
 WioGPS.build.board=WIO_GPS_BOARD
 WioGPS.build.core=arduino
-WioGPS.build.extra_flags=-D__SAMD21G18A__ {build.usb_flags} -DWIO_GPS_BOARD -DARM_MATH_CM0PLUS
+WioGPS.build.extra_flags=-D__SAMD21G18A__ {build.usb_flags} -DWIO_GPS_BOARD -DARM_MATH_CM0PLUS -D__SAMD21__
 WioGPS.build.ldscript=linker_scripts/gcc/flash_with_bootloader.ld
 WioGPS.build.openocdscript=openocd_scripts/arduino_zero.cfg
 WioGPS.build.variant=arduino_zero
@@ -213,7 +213,7 @@ zero.build.usb_product="Seeeduino Zero"
 zero.build.usb_manufacturer="Seeed Studio"
 zero.build.board=SEEED_ZERO
 zero.build.core=arduino
-zero.build.extra_flags=-D__SAMD21G18A__ {build.usb_flags} -DARM_MATH_CM0PLUS -DSEEEDUINO_ZERO
+zero.build.extra_flags=-D__SAMD21G18A__ {build.usb_flags} -DARM_MATH_CM0PLUS -DSEEEDUINO_ZERO -D__SAMD21__
 zero.build.ldscript=linker_scripts/gcc/flash_with_bootloader.ld
 zero.build.openocdscript=openocd_scripts/arduino_zero.cfg
 zero.build.variant=arduino_zero
@@ -249,7 +249,7 @@ rolawan.build.usb_product="Seeeduino LoRaWAN"
 rolawan.build.usb_manufacturer="Seeed Studio"
 rolawan.build.board=SEEED_LORAWAN
 rolawan.build.core=arduino
-rolawan.build.extra_flags=-D__SAMD21G18A__ {build.usb_flags} -DARM_MATH_CM0PLUS -DSEEEDUINO_LORAWAN
+rolawan.build.extra_flags=-D__SAMD21G18A__ {build.usb_flags} -DARM_MATH_CM0PLUS -DSEEEDUINO_LORAWAN -D__SAMD21__
 rolawan.build.ldscript=linker_scripts/gcc/flash_with_bootloader.ld
 rolawan.build.openocdscript=openocd_scripts/arduino_zero.cfg
 rolawan.build.variant=arduino_zero
