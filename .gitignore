@@ -1,5 +1,5 @@
 *.bz2
 *.atsuo
-
+.vscode/
 bootloaders/*/build/
 *~
