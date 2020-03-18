@@ -255,11 +255,6 @@ static const uint8_t DAC1 = PIN_DAC1;
 #define WIO_5S_DOWM (34ul)
 #define WIO_5S_PRESS (35ul)
 
-#define WIO_5S_UP (31ul)
-#define WIO_5S_DOWM (32ul)
-#define WIO_5S_LEFT (33ul)
-#define WIO_5S_RIGHT (34ul)
-#define WIO_5S_PRESS (35ul)
 /*
  * IRQ0
  */
