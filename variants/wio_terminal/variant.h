@@ -149,7 +149,7 @@ static const uint8_t A8 = D8;
 #define BCM11 (49ul)
 #define BCM12 (5ul)
 #define BCM13 (6ul)
-#define BCM14 (6ul)
+#define BCM14 (41ul)
 #define BCM15 (40ul)
 #define BCM16 (7ul)
 #define BCM17 (10ul)
@@ -163,22 +163,6 @@ static const uint8_t A8 = D8;
 #define BCM25 (4ul)
 #define BCM26 (8ul)
 #define BCM27 (0ul)
-
-// FPC Digital PINs
-#define FPC_D0 (14ul)
-#define FPC_D1 (FPC_D0 + 1)
-#define FPC_D2 (FPC_D0 + 2)
-#define FPC_D3 (FPC_D0 + 3)
-#define FPC_D4 (FPC_D0 + 4)
-#define FPC_D5 (FPC_D0 + 5)
-#define FPC_D6 (FPC_D0 + 6)
-#define FPC_D7 (FPC_D0 + 7)
-#define FPC_D8 (FPC_D0 + 8)
-#define FPC_D9 (FPC_D0 + 9)
-#define FPC_D10 (FPC_D0 + 10)
-#define FPC_D11 (FPC_D0 + 11)
-#define FPC_D12 (FPC_D0 + 12)
-#define FPC_D13 (FPC_D0 + 13)
 
 // FPC NEW DEFINE
 #define FPC1 (17ul)
@@ -254,7 +238,6 @@ static const uint8_t DAC1 = PIN_DAC1;
 #define WIO_5S_RIGHT (33ul)
 #define WIO_5S_DOWM (34ul)
 #define WIO_5S_PRESS (35ul)
-
 /*
  * IRQ0
  */
