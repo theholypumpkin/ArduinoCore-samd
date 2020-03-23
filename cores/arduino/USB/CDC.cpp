@@ -142,11 +142,25 @@ bool CDC_Setup(USBSetup &setup)
 void Serial_::begin(uint32_t /* baud_count */)
 {
 	// uart config is ignored in USB-CDC
+	_DTR = true;
 }
 
 void Serial_::begin(uint32_t /* baud_count */, uint8_t /* config */)
 {
 	// uart config is ignored in USB-CDC
+	_DTR = true;
+}
+
+void Serial_::beginWithoutDTR(uint32_t /* baud_count */)
+{
+	//some serial terminal may not set DTR
+	_DTR = false;
+}
+
+void Serial_::beginWithoutDTR(uint32_t /* baud_count */, uint8_t /* config */)
+{
+	//some serial terminal may not set DTR
+	_DTR = false;
 }
 
 void Serial_::end(void)
@@ -215,14 +229,15 @@ size_t Serial_::write(const uint8_t *buffer, size_t size)
 	 the connection is closed are lost - just like with a UART. */
 
 	// TODO - ZE - check behavior on different OSes and test what happens if an
-	// open connection isn't broken cleanly (cable is yanked out, host dies
+	// open connection isn't broken cleanly (cable is yanked out, host dieslineState
 	// or locks up, or host virtual serial port hangs)
 	uint32_t r = 0;
-	if (_usbLineInfo.lineState > 0) // Problem with Windows(R)
+    if (_usbLineInfo.lineState > 0 && _DTR) // Problem with Windows(R)
 	{
-		r = usb.send(CDC_ENDPOINT_IN, buffer, size);
+		setWriteError();
+		return 0;
 	}
-
+	r = usb.send(CDC_ENDPOINT_IN, buffer, size);
 	if (r > 0)
 	{
 		return r;
@@ -271,6 +286,12 @@ Serial_::operator bool()
 		return false;
 
 	bool result = false;
+
+
+	if(!_DTR)
+	{
+		return true;
+	}	
 
 	if (_usbLineInfo.lineState > 0)
 	{
