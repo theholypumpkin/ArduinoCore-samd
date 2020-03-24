@@ -232,7 +232,7 @@ size_t Serial_::write(const uint8_t *buffer, size_t size)
 	// open connection isn't broken cleanly (cable is yanked out, host dieslineState
 	// or locks up, or host virtual serial port hangs)
 	uint32_t r = 0;
-    if (_usbLineInfo.lineState > 0 && _DTR) // Problem with Windows(R)
+    if (_usbLineInfo.lineState == 0 && _DTR) // Problem with Windows(R)
 	{
 		setWriteError();
 		return 0;
@@ -260,8 +260,7 @@ uint32_t Serial_::baud()
 }
 uint8_t Serial_::stopbits()
 {
-	return 0;
-	//return _usbLineInfo.bCharFormat;
+	return _usbLineInfo.bCharFormat;
 }
 uint8_t Serial_::paritytype()
 {
@@ -270,6 +269,16 @@ uint8_t Serial_::paritytype()
 uint8_t Serial_::numbits()
 {
 	return _usbLineInfo.bDataBits;
+}
+
+bool Serial_::dtr() 
+{
+	return _usbLineInfo.lineState & 0x1;
+}
+
+bool Serial_::rts() 
+{
+	return _usbLineInfo.lineState & 0x2;
 }
 
 // This operator is a convenient way for a sketch to check whether the
