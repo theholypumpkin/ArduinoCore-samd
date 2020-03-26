@@ -91,10 +91,10 @@ static inline uint32_t calcPrescaler(uint32_t frequency)
     break;
   }
 
-  return prescalerConfigBits;
+  return TC_CTRLA_PRESCALER_DIV1;
 }
 
-void PWM(uint32_t outputPin, uint32_t frequency, uint32_t duty)
+void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
 {
   PinDescription pinDesc = g_APinDescription[outputPin];
   uint32_t attr = pinDesc.ulPinAttribute;
@@ -285,7 +285,7 @@ void PWM(uint32_t outputPin, uint32_t frequency, uint32_t duty)
 #endif
 }
 
-void noPWM(uint32_t outputPin)
+void noPwm(uint32_t outputPin)
 {
   PinDescription pinDesc = g_APinDescription[outputPin];
   uint32_t attr = pinDesc.ulPinAttribute;
