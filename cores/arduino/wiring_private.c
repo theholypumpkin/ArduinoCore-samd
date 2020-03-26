@@ -20,6 +20,18 @@
 #include "Arduino.h"
 #include "wiring_private.h"
 
+
+uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to)
+{
+  if (from == to) {
+    return value;
+  }
+  if (from > to) {
+    return value >> (from-to);
+  }
+  return value << (to-from);
+}
+
 int pinPeripheral( uint32_t ulPin, EPioType ulPeripheral )
 {
   // Handle the case the pin isn't usable as PIO

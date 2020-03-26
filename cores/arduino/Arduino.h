@@ -91,6 +91,7 @@ void loop( void ) ;
 #include "wiring_digital.h"
 #include "wiring_analog.h"
 #include "wiring_shift.h"
+#include "wiring_pwm.h"
 #include "WInterrupts.h"
 
 // undefine stdlib's abs if encountered

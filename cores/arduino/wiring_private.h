@@ -33,6 +33,8 @@ extern "C" {
 
 int pinPeripheral( uint32_t ulPin, EPioType ulPeripheral );
 
+uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to);
+
 #ifdef __cplusplus
 } // extern "C"
 

@@ -114,17 +114,6 @@ void analogWriteResolution(int res)
   _writeResolution = res;
 }
 
-static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to)
-{
-  if (from == to) {
-    return value;
-  }
-  if (from > to) {
-    return value >> (from-to);
-  }
-  return value << (to-from);
-}
-
 /*
  * Internal Reference is at 1.0v
  * External Reference should be between 1v and VDDANA-0.6v=2.7v
