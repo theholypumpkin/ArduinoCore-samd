@@ -30,6 +30,6 @@
 
 #include "Arduino.h"
 
-void pwm(uint32_t _pin, uint32_t frequency, uint32_t duty = 0);
+void pwm(uint32_t _pin, uint32_t frequency, uint32_t duty = 500);
 void noPwm(uint32_t _pin);
 #endif

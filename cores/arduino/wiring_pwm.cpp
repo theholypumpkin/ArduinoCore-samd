@@ -91,7 +91,7 @@ static inline uint32_t calcPrescaler(uint32_t frequency)
     break;
   }
 
-  return TC_CTRLA_PRESCALER_DIV1;
+  return prescalerConfigBits;
 }
 
 void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
@@ -102,7 +102,7 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
 #if defined(__SAMD51__)
   if (attr & (PIN_ATTR_PWM_E | PIN_ATTR_PWM_F | PIN_ATTR_PWM_G))
   {
-    duty = mapResolution(duty, 8, 8);
+    duty = mapResolution(duty, 10, 8);
     uint32_t prescalerConfigBits;
 
     prescalerConfigBits = calcPrescaler(frequency);
@@ -196,7 +196,7 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
 
   if ((attr & PIN_ATTR_PWM) == PIN_ATTR_PWM)
   {
-    duty = mapResolution(duty, 8, 16);
+    duty = mapResolution(duty, 10, 16);
     uint32_t prescalerConfigBits;
 
     prescalerConfigBits = calcPrescaler(frequency);
