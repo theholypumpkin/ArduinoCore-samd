@@ -16,8 +16,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef _VARIANT_GREOVE_UI_M4_WIRELESS
-#define _VARIANT_GREOVE_UI_M4_WIRELESS
+#ifndef _VARIANT_WIO_TERMINAL
+#define _VARIANT_WIO_TERMINAL
 
 // The definitions here needs a SAMD core >=1.6.10
 #define ARDUINO_SAMD_VARIANT_COMPLIANCE 10610
@@ -57,7 +57,7 @@ extern "C"
  *----------------------------------------------------------------------------*/
 
 // Number of pins defined in PinDescription array
-#define PINS_COUNT (92u)
+#define PINS_COUNT (93u)
 #define NUM_DIGITAL_PINS (23u)
 #define NUM_ANALOG_INPUTS (14u)
 #define NUM_ANALOG_OUTPUTS (2u)
@@ -441,7 +441,7 @@ static const uint8_t DAC1 = PIN_DAC1;
 /*
  * ir sensor
  */
-#define WIO_IR  (20ul)
+#define WIO_IR  (14ul)
 /*
  * 
  */
