@@ -17,5 +17,5 @@
 */
 
 // API compatibility
-#include "../grove_ui_wireless/variant.h"
+#include "../wio_terminal/variant.h"
 
