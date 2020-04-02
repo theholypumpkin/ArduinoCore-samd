@@ -200,8 +200,14 @@ void init( void )
                    DAC_CTRLB_EOEN ;        // External Output Enable (Vout)
  #endif
 
-
 #endif //SAMD51
+
+#ifdef WIO_TERMINAL
+pinMode(OUTPUT_CTR_5V, OUTPUT);
+digitalWrite(OUTPUT_CTR_5V, HIGH);
+pinMode(OUTPUT_CTR_3V3, OUTPUT);
+digitalWrite(OUTPUT_CTR_3V3, LOW);
+#endif
 }
 
 #ifdef __cplusplus

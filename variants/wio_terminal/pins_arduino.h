@@ -17,5 +17,5 @@
 */
 
 // API compatibility
-#include "../wio_terminal/variant.h"
+#include "variant.h"
 
