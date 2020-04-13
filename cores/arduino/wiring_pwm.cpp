@@ -27,6 +27,20 @@
 #include "wiring_pwm.h"
 #include "wiring_private.h"
 
+#if !defined(__SAMD51__)
+// Wait for synchronization of registers between the clock domains
+static __inline__ void syncTC_16(Tc* TCx) __attribute__((always_inline, unused));
+static void syncTC_16(Tc* TCx) {
+  while (TCx->COUNT16.STATUS.bit.SYNCBUSY);
+}
+
+// Wait for synchronization of registers between the clock domains
+static __inline__ void syncTCC(Tcc* TCCx) __attribute__((always_inline, unused));
+static void syncTCC(Tcc* TCCx) {
+  while (TCCx->SYNCBUSY.reg & TCC_SYNCBUSY_MASK);
+}
+#endif
+
 extern uint32_t toneMaxFrequency;
 
 #if defined(__SAMD51__)
@@ -210,18 +224,18 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
       // Compatibility for cores based on SAMD core <=1.6.2
       if (pinDesc.ulPinType == PIO_TIMER_ALT)
       {
-        pinPeripheral(pin, PIO_TIMER_ALT);
+        pinPeripheral(outputPin, PIO_TIMER_ALT);
       }
       else
 #endif
       {
-        pinPeripheral(pin, PIO_TIMER);
+        pinPeripheral(outputPin, PIO_TIMER);
       }
     }
     else if ((attr & PIN_ATTR_TIMER_ALT) == PIN_ATTR_TIMER_ALT)
     {
       //this is on an alt timer
-      pinPeripheral(pin, PIO_TIMER_ALT);
+      pinPeripheral(outputPin, PIO_TIMER_ALT);
     }
     else
     {
@@ -352,18 +366,18 @@ void noPwm(uint32_t outputPin)
       // Compatibility for cores based on SAMD core <=1.6.2
       if (pinDesc.ulPinType == PIO_TIMER_ALT)
       {
-        pinPeripheral(pin, PIO_TIMER_ALT);
+        pinPeripheral(outputPin, PIO_TIMER_ALT);
       }
       else
 #endif
       {
-        pinPeripheral(pin, PIO_TIMER);
+        pinPeripheral(outputPin, PIO_TIMER);
       }
     }
     else if ((attr & PIN_ATTR_TIMER_ALT) == PIN_ATTR_TIMER_ALT)
     {
       //this is on an alt timer
-      pinPeripheral(pin, PIO_TIMER_ALT);
+      pinPeripheral(outputPin, PIO_TIMER_ALT);
     }
     else
     {

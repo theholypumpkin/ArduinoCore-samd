@@ -3,3 +3,4 @@
 .vscode/
 bootloaders/*/build/
 *~
+git-archive-all.sh
