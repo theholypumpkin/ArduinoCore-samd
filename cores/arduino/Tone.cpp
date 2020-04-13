@@ -48,9 +48,9 @@ volatile bool firstTimeRunning = false;
 #define TONE_TC_CHANNEL 0
 
 #if defined(__SAMD51__)
-void TC2_Handler (void) __attribute__ ((weak, alias("Tone_Handler")));
+#define Tone_Handler TC2_Handler
 #else
-void TC5_Handler (void) __attribute__ ((weak, alias("Tone_Handler")));
+#define Tone_Handler TC5_Handler
 #endif
 
 static inline void resetTC (Tc* TCx)
