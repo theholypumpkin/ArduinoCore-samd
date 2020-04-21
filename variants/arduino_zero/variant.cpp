@@ -213,7 +213,7 @@ SERCOM sercom4( SERCOM4 ) ;
 SERCOM sercom5( SERCOM5 ) ;
 
 Uart Serial1( &sercom0, PIN_SERIAL1_RX, PIN_SERIAL1_TX, PAD_SERIAL1_RX, PAD_SERIAL1_TX ) ;
-Uart Serial( &sercom5, PIN_SERIAL_RX, PIN_SERIAL_TX, PAD_SERIAL_RX, PAD_SERIAL_TX ) ;
+Uart Serial2( &sercom5, PIN_SERIAL_RX, PIN_SERIAL_TX, PAD_SERIAL_RX, PAD_SERIAL_TX ) ;
 Uart SerialDBG( &sercom1, PIN_SERIALBDG_RX, PIN_SERIALBDG_TX, PAD_SERIALBDG_RX, PAD_SERIALBDG_TX ) ;
 
 void SERCOM0_Handler()
@@ -223,7 +223,7 @@ void SERCOM0_Handler()
 
 void SERCOM5_Handler()
 {
-  Serial.IrqHandler();
+  Serial2.IrqHandler();
 }
 
 void SERCOM1_Handler()
