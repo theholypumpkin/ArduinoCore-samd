@@ -37,9 +37,9 @@ volatile bool toneIsActive = false;
 volatile bool firstTimeRunning = false;
 
 #if defined(__SAMD51__)
-#define TONE_TC         TC2
-#define TONE_TC_IRQn    TC2_IRQn
-#define TONE_TC_GCLK_ID	TC2_GCLK_ID
+#define TONE_TC         TC0
+#define TONE_TC_IRQn    TC0_IRQn
+#define TONE_TC_GCLK_ID	TC0_GCLK_ID
 #else
 #define TONE_TC         TC5
 #define TONE_TC_IRQn    TC5_IRQn
@@ -48,9 +48,9 @@ volatile bool firstTimeRunning = false;
 #define TONE_TC_CHANNEL 0
 
 #if defined(__SAMD51__)
-#define Tone_Handler TC2_Handler
+void TC0_Handler (void) __attribute__ ((weak, alias("Tone_Handler")));
 #else
-#define Tone_Handler TC5_Handler
+void TC5_Handler (void) __attribute__ ((weak, alias("Tone_Handler")));
 #endif
 
 static inline void resetTC (Tc* TCx)
