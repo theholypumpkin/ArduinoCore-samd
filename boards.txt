@@ -49,7 +49,7 @@ seeed_wio_terminal.build.variant_system_lib=
 seeed_wio_terminal.build.vid=0x2886
 seeed_wio_terminal.build.pid=0x802D
 seeed_wio_terminal.bootloader.tool=openocd
-seeed_wio_terminal.bootloader.file=wio_terminal/bootloader-wio-terminal
+seeed_wio_terminal.bootloader.file=wio_terminal/bootloader-wio-terminal.bin
 seeed_wio_terminal.compiler.arm.cmsis.ldflags="-L{build.variant.path}" -larm_cortexM4lf_math -mfloat-abi=hard -mfpu=fpv4-sp-d16
 seeed_wio_terminal.menu.cache.on=Enabled
 seeed_wio_terminal.menu.cache.on.build.cache_flags=-DENABLE_CACHE
@@ -148,7 +148,7 @@ seeed_XIAO_m0.build.variant_system_lib=
 seeed_XIAO_m0.build.vid=0x2886
 seeed_XIAO_m0.build.pid=0x802F
 seeed_XIAO_m0.bootloader.tool=openocd
-seeed_XIAO_m0.bootloader.file=XIAOM0/bootloader-XIAO_m0-v3.7.0-31-seeeduino.bin
+seeed_XIAO_m0.bootloader.file=XIAOM0/bootloader-XIAO_m0-v3.7.0-33-g90ff611-dirty.bin
 seeed_XIAO_m0.menu.usbstack.arduino=Arduino
 seeed_XIAO_m0.menu.usbstack.tinyusb=TinyUSB
 seeed_XIAO_m0.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
