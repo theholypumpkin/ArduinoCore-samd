@@ -31,6 +31,14 @@ char SoftwareSerial::_receive_buffer[_SS_MAX_RX_BUFF];
 volatile uint8_t SoftwareSerial::_receive_buffer_tail = 0;
 volatile uint8_t SoftwareSerial::_receive_buffer_head = 0;
 
+static EExt_Interrupts DigitalPin_To_Interrupt(uint8_t pin)
+{
+#if (ARDUINO_SAMD_VARIANT_COMPLIANCE >= 10606)
+    return g_APinDescription[pin].ulExtInt;
+#else
+    return digitalPinToInterrupt(pin);
+#endif 
+}
 
 bool SoftwareSerial::listen()
 {
@@ -63,7 +71,7 @@ bool SoftwareSerial::stopListening()
 {
    if (active_object == this)
    {  
-        EIC->INTENCLR.reg = EIC_INTENCLR_EXTINT( 1 << digitalPinToInterrupt( _receivePin )) ;
+        EIC->INTENCLR.reg = EIC_INTENCLR_EXTINT( 1 << DigitalPin_To_Interrupt( _receivePin )) ;
      active_object = NULL;
      return true;
    }
@@ -81,7 +89,7 @@ void SoftwareSerial::recv()
   if (_inverse_logic ? rx_pin_read() : !rx_pin_read())
   {
 
-       EIC->INTENCLR.reg = EIC_INTENCLR_EXTINT( 1 << digitalPinToInterrupt(_receivePin));
+       EIC->INTENCLR.reg = EIC_INTENCLR_EXTINT( 1 << DigitalPin_To_Interrupt(_receivePin));
    
     // Wait approximately 1/2 of a bit width to "center" the sample
        delayMicroseconds(_rx_delay_centering);
@@ -116,7 +124,7 @@ void SoftwareSerial::recv()
     // skip the stop bit
    delayMicroseconds(_rx_delay_stopbit); 
 
-     EIC->INTENSET.reg = EIC_INTENSET_EXTINT( 1 << digitalPinToInterrupt(_receivePin));
+     EIC->INTENSET.reg = EIC_INTENSET_EXTINT( 1 << DigitalPin_To_Interrupt(_receivePin));
   }
 }
 
@@ -193,7 +201,7 @@ void SoftwareSerial::begin(long speed)
   _tx_delay = bit_delay;
   
   // Only setup rx when we have a valid PCINT for this pin
-  if (digitalPinToInterrupt(_receivePin)!=NOT_AN_INTERRUPT) {
+  if (DigitalPin_To_Interrupt(_receivePin)!=NOT_AN_INTERRUPT) {
       //Wait 1/2 bit - 2 micro seconds (time for interrupt to be served)
        _rx_delay_centering = (bit_delay/2) - 2;
       //Wait 1 bit - 2 micro seconds (time in each loop iteration)
@@ -257,7 +265,7 @@ size_t SoftwareSerial::write(uint8_t b)
   if (inv)
     b = ~b;
  // turn off interrupts for a clean txmit
-   EIC->INTENCLR.reg = EIC_INTENCLR_EXTINT( 1 << digitalPinToInterrupt( _receivePin ));
+   EIC->INTENCLR.reg = EIC_INTENCLR_EXTINT( 1 << DigitalPin_To_Interrupt( _receivePin ));
 
   // Write the start bit
   if (inv)
@@ -287,7 +295,7 @@ size_t SoftwareSerial::write(uint8_t b)
     reg->reg |= reg_mask;
   
 
-   EIC->INTENSET.reg = EIC_INTENSET_EXTINT( 1 << digitalPinToInterrupt( _receivePin ) ) ;
+   EIC->INTENSET.reg = EIC_INTENSET_EXTINT( 1 << DigitalPin_To_Interrupt( _receivePin ) ) ;
   
   delayMicroseconds(delay);  
   
@@ -299,11 +307,11 @@ void SoftwareSerial::flush()
   if (!isListening())
     return;
 
-  EIC->INTENCLR.reg = EIC_INTENCLR_EXTINT( 1 << digitalPinToInterrupt( _receivePin ) ) ;
+  EIC->INTENCLR.reg = EIC_INTENCLR_EXTINT( 1 << DigitalPin_To_Interrupt( _receivePin ) ) ;
   
   _receive_buffer_head = _receive_buffer_tail = 0;
 
-   EIC->INTENSET.reg = EIC_INTENSET_EXTINT( 1 << digitalPinToInterrupt( _receivePin ) ) ;
+   EIC->INTENSET.reg = EIC_INTENSET_EXTINT( 1 << DigitalPin_To_Interrupt( _receivePin ) ) ;
   
 }
 
