@@ -157,6 +157,43 @@ seeed_XIAO_m0.menu.debug.on=On
 seeed_XIAO_m0.menu.debug.on.build.flags.debug=-g
 
 
+# Seeed XIAO M0 (SAMD21)
+# ------------------------------
+Wio_Lite_MG126.name=Seeeduino Wio lite MG126
+Wio_Lite_MG126.vid.0=0x2886
+Wio_Lite_MG126.pid.0=0x802A
+Wio_Lite_MG126.vid.1=0x2886
+Wio_Lite_MG126.pid.1=0x002A
+Wio_Lite_MG126.upload.tool=bossac
+Wio_Lite_MG126.upload.protocol=sam-ba
+Wio_Lite_MG126.upload.maximum_size=262144
+Wio_Lite_MG126.upload.offset=0x2000
+Wio_Lite_MG126.upload.use_1200bps_touch=true
+Wio_Lite_MG126.upload.wait_for_upload_port=true
+Wio_Lite_MG126.upload.native_usb=true
+Wio_Lite_MG126.build.mcu=cortex-m0plus
+Wio_Lite_MG126.build.f_cpu=48000000L
+Wio_Lite_MG126.build.usb_product="Seeeduino_Wio_Lite_MG126"
+Wio_Lite_MG126.build.usb_manufacturer="Seeed"
+Wio_Lite_MG126.build.board=Wio_Lite_MG126
+Wio_Lite_MG126.build.core=arduino
+Wio_Lite_MG126.build.extra_flags= -DARDUINO_SAMD_ZERO -D__SAMD21__ -D__SAMD21G18A__ -DARM_MATH_CM0PLUS -DWio_Lite_MG126 {build.usb_flags}
+Wio_Lite_MG126.build.ldscript=linker_scripts/gcc/flash_with_bootloader.ld
+Wio_Lite_MG126.build.openocdscript=openocd_scripts/Wio_Lite_MG126.cfg
+Wio_Lite_MG126.build.variant=Wio_Lite_MG126
+Wio_Lite_MG126.build.variant_system_lib=
+Wio_Lite_MG126.build.vid=0x2886
+Wio_Lite_MG126.build.pid=0x802A
+Wio_Lite_MG126.bootloader.tool=openocd
+Wio_Lite_MG126.bootloader.file=Wio_Lite_MG126/Bootloader_D21.hex
+Wio_Lite_MG126.menu.usbstack.arduino=Arduino
+Wio_Lite_MG126.menu.usbstack.tinyusb=TinyUSB
+Wio_Lite_MG126.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
+Wio_Lite_MG126.menu.debug.off=Off
+Wio_Lite_MG126.menu.debug.on=On
+Wio_Lite_MG126.menu.debug.on.build.flags.debug=-g
+
+
 # Wio GPS Board
 # ---------------------------------------
 WioGPS.name=Seeeduino Wio GPS Board
