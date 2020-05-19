@@ -7,3 +7,6 @@
 [submodule "cores/arduino/TinyUSB/Adafruit_TinyUSB_ArduinoCore"]
 	path = cores/arduino/TinyUSB/Adafruit_TinyUSB_ArduinoCore
 	url = https://github.com/adafruit/Adafruit_TinyUSB_ArduinoCore.git
+[submodule "libraries/Seeed_Arduino_LCD"]
+	path = libraries/Seeed_Arduino_LCD
+	url = https://github.com/Seeed-Studio/Seeed_Arduino_LCD.git
