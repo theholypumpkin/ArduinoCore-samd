@@ -309,7 +309,6 @@ void noPwm(uint32_t outputPin)
   {
 
     uint32_t tcNum = GetTCNumber(pinDesc.ulPWMChannel);
-    uint8_t tcChannel = GetTCChannelNumber(pinDesc.ulPWMChannel);
 
     if (attr & PIN_ATTR_PWM_E)
       pinPeripheral(outputPin, PIO_TIMER);
