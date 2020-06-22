@@ -204,7 +204,7 @@ bool USBDeviceClass::sendDescriptor(USBSetup &setup)
 {
 	uint8_t t = setup.wValueH;
 	uint8_t desc_length = 0;
-	bool _cdcComposite;
+	bool _cdcComposite = 0;
 	int ret;
 	const uint8_t *desc_addr = 0;
 
@@ -559,7 +559,7 @@ void USBDeviceClass::flush(uint32_t ep)
 		// RAM buffer is full, we can send data (IN)
 		usbd.epBank1SetReady(ep);
 
-	 	// Clear the transfer complete flag
+		// Clear the transfer complete flag
 		usbd.epBank1AckTransferComplete(ep);
 	}
 }
@@ -877,6 +877,7 @@ bool USBDeviceClass::handleStandardSetup(USBSetup &setup)
 			sendZlp(0);
 			return true;
 		}
+		return false;
 
 	case SET_ADDRESS:
 		setAddress(setup.wValueL);
@@ -1010,7 +1011,6 @@ void USBDeviceClass::ISRHandler()
 		// Check if endpoint has a pending interrupt
 		if ((ept_int & (1 << i)) != 0)
 		{
-
 			// Endpoint Transfer Complete (0/1) Interrupt
 			if (usbd.epBank0IsTransferComplete(i) ||
 			    usbd.epBank1IsTransferComplete(i))

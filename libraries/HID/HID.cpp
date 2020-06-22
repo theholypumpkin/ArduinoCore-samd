@@ -146,7 +146,7 @@ bool HID_::setup(USBSetup& setup)
 
 HID_::HID_(void) : PluggableUSBModule(1, 1, epType),
                    rootNode(NULL), descriptorSize(0),
-                   protocol(1), idle(1)
+                   protocol(HID_REPORT_PROTOCOL), idle(1)
 {
 	epType[0] = USB_ENDPOINT_TYPE_INTERRUPT | USB_ENDPOINT_IN(0);;
 	PluggableUSB().plug(this);
