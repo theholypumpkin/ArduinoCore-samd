@@ -82,7 +82,7 @@ seeed_wio_terminal.menu.usbstack.tinyusb=TinyUSB
 seeed_wio_terminal.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
 seeed_wio_terminal.menu.debug.off=Off
 seeed_wio_terminal.menu.debug.on=On
-seeed_wio_terminal.menu.debug.on.build.flags.debug=-g
+seeed_wio_terminal.menu.debug.on.build.flags.debug=-g -DDEBUG=1
 
 # Seeed Femto M0 (SAMD21)
 # ------------------------------
@@ -118,7 +118,7 @@ Seeed_femto_m0.menu.usbstack.tinyusb=TinyUSB
 Seeed_femto_m0.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
 Seeed_femto_m0.menu.debug.off=Off
 Seeed_femto_m0.menu.debug.on=On
-Seeed_femto_m0.menu.debug.on.build.flags.debug=-g
+Seeed_femto_m0.menu.debug.on.build.flags.debug=-g -DDEBUG=1
 
 # Seeed XIAO M0 (SAMD21)
 # ------------------------------
@@ -154,7 +154,7 @@ seeed_XIAO_m0.menu.usbstack.tinyusb=TinyUSB
 seeed_XIAO_m0.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
 seeed_XIAO_m0.menu.debug.off=Off
 seeed_XIAO_m0.menu.debug.on=On
-seeed_XIAO_m0.menu.debug.on.build.flags.debug=-g
+seeed_XIAO_m0.menu.debug.on.build.flags.debug=-g -DDEBUG=1
 
 
 # Seeed XIAO M0 (SAMD21)
@@ -191,7 +191,7 @@ Wio_Lite_MG126.menu.usbstack.tinyusb=TinyUSB
 Wio_Lite_MG126.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
 Wio_Lite_MG126.menu.debug.off=Off
 Wio_Lite_MG126.menu.debug.on=On
-Wio_Lite_MG126.menu.debug.on.build.flags.debug=-g
+Wio_Lite_MG126.menu.debug.on.build.flags.debug=-g -DDEBUG=1
 
 
 # Wio GPS Board
@@ -228,7 +228,7 @@ WioGPS.menu.usbstack.tinyusb=TinyUSB
 WioGPS.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
 WioGPS.menu.debug.off=Off
 WioGPS.menu.debug.on=On
-WioGPS.menu.debug.on.build.flags.debug=-g
+WioGPS.menu.debug.on.build.flags.debug=-g -DDEBUG=1
 
 # Seeeduino Zero
 # ---------------------------------------
@@ -264,7 +264,7 @@ zero.menu.usbstack.tinyusb=TinyUSB
 zero.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
 zero.menu.debug.off=Off
 zero.menu.debug.on=On
-zero.menu.debug.on.build.flags.debug=-g
+zero.menu.debug.on.build.flags.debug=-g -DDEBUG=1
 
 # Seeeduino LoRaWAN
 # ---------------------------------------
@@ -300,7 +300,7 @@ rolawan.menu.usbstack.tinyusb=TinyUSB
 rolawan.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
 rolawan.menu.debug.off=Off
 rolawan.menu.debug.on=On
-rolawan.menu.debug.on.build.flags.debug=-g
+rolawan.menu.debug.on.build.flags.debug=-g -DDEBUG=1
 
 
 # Seeed Grove UI Wireless (SAMD51)
@@ -364,6 +364,6 @@ seeed_grove_ui_wireless.menu.usbstack.tinyusb=TinyUSB
 seeed_grove_ui_wireless.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
 seeed_grove_ui_wireless.menu.debug.off=Off
 seeed_grove_ui_wireless.menu.debug.on=On
-seeed_grove_ui_wireless.menu.debug.on.build.flags.debug=-g
+seeed_grove_ui_wireless.menu.debug.on.build.flags.debug=-g -DDEBUG=1
 
 

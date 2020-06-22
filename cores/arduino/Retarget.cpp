@@ -55,15 +55,21 @@ extern int __real__write (int fd, const char *ptr, int len);
 int __wrap__write (int fd, const char *ptr, int len) {
 	(void)fd;	// UNUSED
 
-	int i;
+	#if defined(DEBUG) && DEBUG
+	static int serial_init = 0;
+	if (!serial_init) {
+		SERIAL_PORT_HARDWARE.begin(115200);
+		serial_init = 1;
+	}
 
-	if (!Serial) {
+	if (!SERIAL_PORT_HARDWARE) {
 		return len;
 	}
 
-	for (i = 0; i < len; i++) {
-		Serial.write(ptr[i]);
+	for (int i = 0; i < len; i++) {
+		SERIAL_PORT_HARDWARE.write(ptr[i]);
 	}
+	#endif
 	return len;
 }
 
