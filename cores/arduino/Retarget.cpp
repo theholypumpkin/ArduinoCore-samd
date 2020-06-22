@@ -73,6 +73,20 @@ int __wrap__write (int fd, const char *ptr, int len) {
 	return len;
 }
 
+int __debug_buf(const char* head, char* buf, int len) {
+	int i;
+
+	printf("\nDBG:%s[%d] = \r\n\t", head, len);
+	for (i = 0; i < len; i++) {
+		printf("%.2X ", buf[i]);
+		if ((i & 0xFUL) == 0xFUL && i != len - 1) {
+			printf("\r\n\t");
+		}
+	}
+	printf("\r\n");
+	return len;
+}
+
 #ifdef __cplusplus
 }
 #endif

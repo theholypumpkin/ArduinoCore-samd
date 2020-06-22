@@ -64,6 +64,8 @@ void init( void );
 void setup( void ) ;
 void loop( void ) ;
 
+int __debug_buf(const char* head, char* buf, int len);
+
 #include "WVariant.h"
 
 #ifdef __cplusplus
