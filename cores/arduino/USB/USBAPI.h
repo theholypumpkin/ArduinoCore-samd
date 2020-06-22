@@ -195,10 +195,10 @@ extern Serial_ Serial;
 //================================================================================
 //	MSC 'Driver'
 
-uint32_t		MSC_GetInterface(uint8_t* interfaceNum);
-uint32_t		MSC_GetDescriptor(uint32_t i);
-bool	MSC_Setup(USBSetup& setup);
-bool	MSC_Data(uint8_t rx,uint8_t tx);
+uint32_t MSC_GetInterface(uint8_t* interfaceNum);
+uint32_t MSC_GetDescriptor(uint32_t i);
+bool MSC_Setup(USBSetup& setup);
+bool MSC_Data(uint8_t rx,uint8_t tx);
 
 //================================================================================
 //================================================================================
@@ -207,8 +207,8 @@ bool	MSC_Data(uint8_t rx,uint8_t tx);
 int CDC_GetInterface(uint8_t* interfaceNum);
 const void* _CDC_GetInterface(void);
 uint32_t _CDC_GetInterfaceLength(void);
-uint32_t		CDC_GetOtherInterface(uint8_t* interfaceNum);
-uint32_t		CDC_GetDescriptor(uint32_t i);
-bool	CDC_Setup(USBSetup& setup);
+uint32_t  CDC_GetOtherInterface(uint8_t* interfaceNum);
+uint32_t  CDC_GetDescriptor(uint32_t i);
+bool      CDC_Setup(USBSetup& setup);
 
 #endif  // __cplusplus
