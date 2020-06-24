@@ -38,9 +38,6 @@ void __attribute__((weak)) tinyusb_task(void)
 void _real_body()
 {
   setup();
-  #if defined(USE_TINYUSB)
-      tinyusb_task();
-  #endif
   for (;;)
   {
     loop();
@@ -73,6 +70,7 @@ int main(void)
 
 #if defined(USE_TINYUSB)
   Adafruit_TinyUSB_Core_init();
+  tinyusb_task();
 #elif defined(USBCON)
   USBDevice.init();
   USBDevice.attach();
