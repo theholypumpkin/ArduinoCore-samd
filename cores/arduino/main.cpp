@@ -22,26 +22,36 @@
 // Weak empty variant initialization function.
 // May be redefined by variant files.
 void initVariant() __attribute__((weak));
-void initVariant() { }
+void initVariant() {}
+#if defined(USE_TINYUSB)
+// run TinyUSB background task auto This method will be overridden when running in FreeRTOS
+void __attribute__((weak)) tinyusb_task(void)
+{
+}
+#endif
 
 /*
  * _real_body(),_wrap_body() is a compiler trick,
  * user could overwrite the arduino setup/loop function by re-implement _wrap_body(),
  * calling of _real_body() in _wrap_body() is optional.
  */
-void _real_body(){
+void _real_body()
+{
   setup();
-
+  #if defined(USE_TINYUSB)
+      tinyusb_task();
+  #endif
   for (;;)
   {
     loop();
     yield(); // yield run usb background task
-
-    if (serialEventRun) serialEventRun();
+    if (serialEventRun)
+      serialEventRun();
   }
 }
 
-void __attribute__((weak)) _wrap_body(){
+void __attribute__((weak)) _wrap_body()
+{
   _real_body();
 }
 
@@ -51,7 +61,7 @@ extern "C" void __libc_init_array(void);
 /*
  * \brief Main entry point of Arduino application
  */
-int main( void )
+int main(void)
 {
   init();
 
@@ -70,14 +80,3 @@ int main( void )
   _wrap_body();
   return 0;
 }
-
-#if defined(USE_TINYUSB)
-
-// run TinyUSB background task when yield()
-extern  "C" void yield(void)
-{
-  tud_task();
-  tud_cdc_write_flush();
-}
-
-#endif
