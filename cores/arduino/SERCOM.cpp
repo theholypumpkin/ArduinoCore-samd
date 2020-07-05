@@ -47,6 +47,11 @@ SERCOM::SERCOM(Sercom* s)
  #elif SERCOM_SPI_FREQ_REF == 100000000 // 100 MHz clock = GCLK2
   clockSource = SERCOM_CLOCK_SOURCE_100M;
  #endif
+ #ifdef SEEED_GROVE_UI_WIRELESS
+  if (sercom == SERCOM7 /* LCD interface */) {
+    clockSource = SERCOM_CLOCK_SOURCE_FCPU;
+  }
+ #endif
 #endif // end __SAMD51__
 }
 
