@@ -86,8 +86,9 @@ const uint8_t STRING_MANUFACTURER[] = USB_MANUFACTURER;
 
 
 //	DEVICE DESCRIPTOR
-const DeviceDescriptor USB_DeviceDescriptorB = D_DEVICE(0xEF, 0x02, 0x01, 64, USB_VID, USB_PID, 0x100, IMANUFACTURER, IPRODUCT, ISERIAL, 1);
-const DeviceDescriptor USB_DeviceDescriptor = D_DEVICE(0x00, 0x00, 0x00, 64, USB_VID, USB_PID, 0x100, IMANUFACTURER, IPRODUCT, ISERIAL, 1);
+// USB Display Device Version 1.04(0x104)
+const DeviceDescriptor USB_DeviceDescriptorB = D_DEVICE(0xEF, 0x02, 0x01, 64, USB_VID, USB_PID, 0x104, IMANUFACTURER, IPRODUCT, ISERIAL, 1);
+const DeviceDescriptor USB_DeviceDescriptor = D_DEVICE(0x00, 0x00, 0x00, 64, USB_VID, USB_PID, 0x104, IMANUFACTURER, IPRODUCT, ISERIAL, 1);
 
 //==================================================================
 
