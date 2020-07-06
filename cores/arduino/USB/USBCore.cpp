@@ -86,8 +86,9 @@ const uint8_t STRING_MANUFACTURER[] = USB_MANUFACTURER;
 
 
 //	DEVICE DESCRIPTOR
-const DeviceDescriptor USB_DeviceDescriptorB = D_DEVICE(0xEF, 0x02, 0x01, 64, USB_VID, USB_PID, 0x100, IMANUFACTURER, IPRODUCT, ISERIAL, 1);
-const DeviceDescriptor USB_DeviceDescriptor = D_DEVICE(0x00, 0x00, 0x00, 64, USB_VID, USB_PID, 0x100, IMANUFACTURER, IPRODUCT, ISERIAL, 1);
+// USB Display Device Version 1.04(0x104)
+const DeviceDescriptor USB_DeviceDescriptorB = D_DEVICE(0xEF, 0x02, 0x01, 64, USB_VID, USB_PID, 0x104, IMANUFACTURER, IPRODUCT, ISERIAL, 1);
+const DeviceDescriptor USB_DeviceDescriptor = D_DEVICE(0x00, 0x00, 0x00, 64, USB_VID, USB_PID, 0x104, IMANUFACTURER, IPRODUCT, ISERIAL, 1);
 
 //==================================================================
 
@@ -297,22 +298,23 @@ void USBDeviceClass::standby() {
 void USBDeviceClass::handleEndpoint(uint8_t ep)
 {
 #if defined(CDC_ENABLED)
-	if (ep == CDC_ENDPOINT_IN)
+	if (ep == CDC_ENDPOINT_IN || ep == CDC_ENDPOINT_ACM)
 	{
-		// NAK on endpoint IN, the bank is not yet filled in.
-		usbd.epBank1ResetReady(CDC_ENDPOINT_IN);
-		usbd.epBank1AckTransferComplete(CDC_ENDPOINT_IN);
-	}
-	if (ep == CDC_ENDPOINT_ACM)
-	{
-		// NAK on endpoint IN, the bank is not yet filled in.
-		usbd.epBank1ResetReady(CDC_ENDPOINT_ACM);
-		usbd.epBank1AckTransferComplete(CDC_ENDPOINT_ACM);
+		if (usbd.epBank0IsTransferComplete(ep) || usbd.epBank1IsTransferComplete(ep)) {
+			// NAK on endpoint IN, the bank is not yet filled in.
+			usbd.epBank1ResetReady(ep);
+			usbd.epBank1AckTransferComplete(ep);
+		}
+		return;
 	}
 #endif
 
 #if defined(PLUGGABLE_USB_ENABLED)
-	// Empty
+	int r = PluggableUSB().handleEndpoint(ep);
+	if (r != 0) {
+		usbd.epAckPendingInterrupts(ep);
+		return;
+	}
 #endif
 }
 
@@ -370,6 +372,8 @@ void USBDeviceClass::init()
 	usbd.reset();
 
 	usbd.calibrate();
+	usbd.setDataSensitiveQoS();
+	usbd.setConfigSensitiveQoS();
 	usbd.setUSBDeviceMode();
 	usbd.runInStandby();
 	usbd.setFullSpeed();
@@ -490,9 +494,10 @@ uint32_t EndPoints[] =
 	0,
 #endif
 };
+#define EP_ARRAY_SIZE   (sizeof(EndPoints)/sizeof(EndPoints[0]))
 
 void USBDeviceClass::initEndpoints() {
-	for (uint8_t i = 1; i < sizeof(EndPoints) && EndPoints[i] != 0; i++) {
+	for (uint8_t i = 1; (i < EP_ARRAY_SIZE) && (EndPoints[i] != 0); i++) {
 		initEP(i, EndPoints[i]);
 	}
 }
@@ -522,10 +527,6 @@ void USBDeviceClass::initEP(uint32_t ep, uint32_t config)
 	{
 		usbd.epBank1SetSize(ep, 64);
 		usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
-
-		// NAK on endpoint IN, the bank is not yet filled in.
-		usbd.epBank1ResetReady(ep);
-
 		usbd.epBank1SetType(ep, 3); // BULK IN
 	}
 	else if (config == USB_ENDPOINT_TYPE_CONTROL)
@@ -537,15 +538,11 @@ void USBDeviceClass::initEP(uint32_t ep, uint32_t config)
 
 		// Setup Control IN
 		usbd.epBank1SetSize(ep, 64);
-		usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[0]);
+		usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
 		usbd.epBank1SetType(ep, 1); // CONTROL IN
 
 		// Release OUT EP
-		usbd.epBank0SetMultiPacketSize(ep, 64);
-		usbd.epBank0SetByteCount(ep, 0);
-
-		// NAK on endpoint OUT, the bank is full.
-		usbd.epBank0SetReady(ep);
+		usbd.epReleaseOutBank0(ep, 64);
 	}
 }
 
@@ -562,6 +559,17 @@ void USBDeviceClass::flush(uint32_t ep)
 		// Clear the transfer complete flag
 		usbd.epBank1AckTransferComplete(ep);
 	}
+}
+
+void USBDeviceClass::clear(uint32_t ep) {
+	usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
+	usbd.epBank1SetByteCount(ep, 0);
+
+	// Clear the transfer complete flag
+	usbd.epBank1AckTransferComplete(ep);
+
+	// RAM buffer is full, we can send data (IN)
+	usbd.epBank1SetReady(ep);
 }
 
 void USBDeviceClass::stall(uint32_t ep)
@@ -877,7 +885,7 @@ bool USBDeviceClass::handleStandardSetup(USBSetup &setup)
 			sendZlp(0);
 			return true;
 		}
-		return false;
+		break;
 
 	case SET_ADDRESS:
 		setAddress(setup.wValueL);
@@ -923,6 +931,7 @@ bool USBDeviceClass::handleStandardSetup(USBSetup &setup)
 	default:
 		return true;
 	}
+	return true;
 }
 
 void USBDeviceClass::ISRHandler()
@@ -1003,29 +1012,17 @@ void USBDeviceClass::ISRHandler()
 		}
 
 	} // end Received Setup handler
+	// usbd.epAckPendingInterrupts(0);
 
-	uint8_t i=0;
-	uint8_t ept_int = usbd.epInterruptSummary() & 0xFE; // Remove endpoint number 0 (setup)
-	while (ept_int != 0)
-	{
-		// Check if endpoint has a pending interrupt
-		if ((ept_int & (1 << i)) != 0)
-		{
-			// Endpoint Transfer Complete (0/1) Interrupt
-			if (usbd.epBank0IsTransferComplete(i) ||
-			    usbd.epBank1IsTransferComplete(i))
-			{
-				if (epHandlers[i]) {
-					epHandlers[i]->handleEndpoint();
-				} else {
-					handleEndpoint(i);
-				}
+	for (int ep = 1; ep < USB_EPT_NUM; ep++) {
+		// Endpoint Transfer Complete (0/1) Interrupt
+		if (usbd.epHasPendingInterrupts(ep)) {
+			if (epHandlers[ep]) {
+				epHandlers[ep]->handleEndpoint();
+			} else {
+				handleEndpoint(ep);
 			}
-			ept_int &= ~(1 << i);
 		}
-		i++;
-		if (i > USB_EPT_NUM)
-			break;  // fire exit
 	}
 }
 

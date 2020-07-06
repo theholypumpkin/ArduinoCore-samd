@@ -61,6 +61,10 @@ public:
 	inline void noRunInStandby() { usb.CTRLA.bit.RUNSTDBY = 0; }
 	inline void wakeupHost()     { usb.CTRLB.bit.UPRSM = 1; }
 
+	// USB QoS
+	inline void setDataSensitiveQoS() { usb.QOSCTRL.bit.DQOS = 2; }
+	inline void setConfigSensitiveQoS() { usb.QOSCTRL.bit.CQOS = 2; }
+
 	// USB speed
 	inline void setFullSpeed()       { usb.CTRLB.bit.SPDCONF = USB_DEVICE_CTRLB_SPDCONF_FS_Val;   }
 	inline void setLowSpeed()        { usb.CTRLB.bit.SPDCONF = USB_DEVICE_CTRLB_SPDCONF_LS_Val;   }
@@ -102,27 +106,37 @@ public:
 	// Interrupts
 	inline uint16_t epInterruptSummary() { return usb.EPINTSMRY.reg; }
 
+	inline bool epHasPendingInterrupts(ep_t ep)     { return usb.DeviceEndpoint[ep].EPINTFLAG.reg != 0; }
 	inline bool epBank0IsSetupReceived(ep_t ep)     { return usb.DeviceEndpoint[ep].EPINTFLAG.bit.RXSTP; }
 	inline bool epBank0IsStalled(ep_t ep)           { return usb.DeviceEndpoint[ep].EPINTFLAG.bit.STALL0; }
 	inline bool epBank1IsStalled(ep_t ep)           { return usb.DeviceEndpoint[ep].EPINTFLAG.bit.STALL1; }
+	inline bool epBank0IsTransferFailed(ep_t ep)    { return usb.DeviceEndpoint[ep].EPINTFLAG.bit.TRFAIL0; }
+	inline bool epBank1IsTransferFailed(ep_t ep)    { return usb.DeviceEndpoint[ep].EPINTFLAG.bit.TRFAIL1; }
 	inline bool epBank0IsTransferComplete(ep_t ep)  { return usb.DeviceEndpoint[ep].EPINTFLAG.bit.TRCPT0; }
 	inline bool epBank1IsTransferComplete(ep_t ep)  { return usb.DeviceEndpoint[ep].EPINTFLAG.bit.TRCPT1; }
 
+	inline void epAckPendingInterrupts(ep_t ep)     { usb.DeviceEndpoint[ep].EPINTFLAG.reg = 0x7F; }
 	inline void epBank0AckSetupReceived(ep_t ep)    { usb.DeviceEndpoint[ep].EPINTFLAG.reg = USB_DEVICE_EPINTFLAG_RXSTP; }
 	inline void epBank0AckStalled(ep_t ep)          { usb.DeviceEndpoint[ep].EPINTFLAG.reg = USB_DEVICE_EPINTFLAG_STALL(1); }
 	inline void epBank1AckStalled(ep_t ep)          { usb.DeviceEndpoint[ep].EPINTFLAG.reg = USB_DEVICE_EPINTFLAG_STALL(2); }
+	inline void epBank0AckTransferFailed(ep_t ep)   { usb.DeviceEndpoint[ep].EPINTFLAG.reg = USB_DEVICE_EPINTFLAG_TRFAIL(1); }
+	inline void epBank1AckTransferFailed(ep_t ep)   { usb.DeviceEndpoint[ep].EPINTFLAG.reg = USB_DEVICE_EPINTFLAG_TRFAIL(2); }
 	inline void epBank0AckTransferComplete(ep_t ep) { usb.DeviceEndpoint[ep].EPINTFLAG.reg = USB_DEVICE_EPINTFLAG_TRCPT(1); }
 	inline void epBank1AckTransferComplete(ep_t ep) { usb.DeviceEndpoint[ep].EPINTFLAG.reg = USB_DEVICE_EPINTFLAG_TRCPT(2); }
 
 	inline void epBank0EnableSetupReceived(ep_t ep)    { usb.DeviceEndpoint[ep].EPINTENSET.bit.RXSTP = 1; }
 	inline void epBank0EnableStalled(ep_t ep)          { usb.DeviceEndpoint[ep].EPINTENSET.bit.STALL0 = 1; }
 	inline void epBank1EnableStalled(ep_t ep)          { usb.DeviceEndpoint[ep].EPINTENSET.bit.STALL1 = 1; }
+	inline void epBank0EnableTransferFailed(ep_t ep)   { usb.DeviceEndpoint[ep].EPINTENSET.bit.TRFAIL0 = 1; }
+	inline void epBank1EnableTransferFailed(ep_t ep)   { usb.DeviceEndpoint[ep].EPINTENSET.bit.TRFAIL1 = 1; }
 	inline void epBank0EnableTransferComplete(ep_t ep) { usb.DeviceEndpoint[ep].EPINTENSET.bit.TRCPT0 = 1; }
 	inline void epBank1EnableTransferComplete(ep_t ep) { usb.DeviceEndpoint[ep].EPINTENSET.bit.TRCPT1 = 1; }
 
 	inline void epBank0DisableSetupReceived(ep_t ep)    { usb.DeviceEndpoint[ep].EPINTENCLR.bit.RXSTP = 1; }
 	inline void epBank0DisableStalled(ep_t ep)          { usb.DeviceEndpoint[ep].EPINTENCLR.bit.STALL0 = 1; }
 	inline void epBank1DisableStalled(ep_t ep)          { usb.DeviceEndpoint[ep].EPINTENCLR.bit.STALL1 = 1; }
+	inline void epBank0DisableTransferFailed(ep_t ep)   { usb.DeviceEndpoint[ep].EPINTENCLR.bit.TRFAIL0 = 1; }
+	inline void epBank1DisableTransferFailed(ep_t ep)   { usb.DeviceEndpoint[ep].EPINTENCLR.bit.TRFAIL1 = 1; }
 	inline void epBank0DisableTransferComplete(ep_t ep) { usb.DeviceEndpoint[ep].EPINTENCLR.bit.TRCPT0 = 1; }
 	inline void epBank1DisableTransferComplete(ep_t ep) { usb.DeviceEndpoint[ep].EPINTENCLR.bit.TRCPT1 = 1; }
 
@@ -170,6 +184,15 @@ public:
 	inline void epBank0EnableAutoZLP(ep_t ep)  { EP[ep].DeviceDescBank[0].PCKSIZE.bit.AUTO_ZLP = 1; }
 	inline void epBank1EnableAutoZLP(ep_t ep)  { EP[ep].DeviceDescBank[1].PCKSIZE.bit.AUTO_ZLP = 1; }
 
+	// USB Device Endpoint transactions helpers
+	// ----------------------------------------
+
+	inline void epReleaseOutBank0(ep_t ep, uint16_t s) {
+		epBank0SetMultiPacketSize(ep, s);
+		epBank0SetByteCount(ep, 0);
+		epBank0ResetReady(ep);
+	}
+
 private:
 	// USB Device registers
 	UsbDevice &usb;
@@ -211,9 +234,9 @@ class EPHandler {
 public:
 	virtual void handleEndpoint() = 0;
 	virtual uint32_t recv(void *_data, uint32_t len) = 0;
-	virtual uint32_t available() const = 0;
-
 	virtual void init() = 0;
+	virtual uint32_t available() = 0;
+	virtual int peek() = 0;
 };
 
 class DoubleBufferedEPOutHandler : public EPHandler {
@@ -233,19 +256,23 @@ public:
 		usbd.epBank0SetType(ep, 3); // BULK OUT
 
 		usbd.epBank0SetAddress(ep, const_cast<uint8_t *>(data0));
+		usbd.epBank0EnableTransferComplete(ep);
 
 		release();
 	}
 
 	virtual ~DoubleBufferedEPOutHandler() {
-		free((void*)data0);
-		free((void*)data1);
 	}
 	void init() {};
 
-	virtual uint32_t recv(void *_data, uint32_t len)
+	uint32_t _recv()
 	{
-		uint8_t *data = reinterpret_cast<uint8_t *>(_data);
+		uint32_t i = 0;
+		uint32_t len = 0;
+
+		synchronized {
+			len = _rx_buffer.availableForStore();
+		}
 
 		// R/W: current, first0/1, ready0/1, notify
 		// R  : last0/1, data0/1
@@ -256,9 +283,8 @@ public:
 				}
 			}
 			// when ready0==true the buffer is not being filled and last0 is constant
-			uint32_t i;
-			for (i=0; i<len && first0 < last0; i++) {
-				data[i] = data0[first0++];
+			for (; i<len && first0 < last0; i++) {
+				_rx_buffer.store_char(data0[first0++]);
 			}
 			if (first0 == last0) {
 				first0 = 0;
@@ -279,9 +305,8 @@ public:
 				}
 			}
 			// when ready1==true the buffer is not being filled and last1 is constant
-			uint32_t i;
-			for (i=0; i<len && first1 < last1; i++) {
-				data[i] = data1[first1++];
+			for (; i<len && first1 < last1; i++) {
+				_rx_buffer.store_char(data1[first1++]);
 			}
 			if (first1 == last1) {
 				first1 = 0;
@@ -295,6 +320,34 @@ public:
 				}
 			}
 			return i;
+		}
+	}
+
+	virtual uint32_t recv(void *_data, uint32_t len) {
+		_recv();
+		uint32_t i = 0;
+		uint8_t *data = reinterpret_cast<uint8_t *>(_data);
+		synchronized {
+			for (; i < len && _rx_buffer.available(); i++) {
+				data[i] = _rx_buffer.read_char();
+			}
+		}
+		return i;
+	}
+
+	virtual uint32_t _available() const {
+		if (current == 0) {
+			bool ready = ready0;
+			synchronized {
+				ready = ready0;
+			}
+			return ready ? (last0 - first0) : 0;
+		} else {
+			bool ready = false;
+			synchronized {
+				ready = ready1;
+			}
+			return ready ? (last1 - first1) : 0;
 		}
 	}
 
@@ -340,39 +393,34 @@ public:
 			}
 			release();
 		}
-	}
-
-	// Returns how many bytes are stored in the buffers
-	virtual uint32_t available() const {
-		if (current == 0) {
-			bool ready = false;
-			synchronized {
-				ready = ready0;
-			}
-			return ready ? (last0 - first0) : 0;
-		} else {
-			bool ready = false;
-			synchronized {
-				ready = ready1;
-			}
-			return ready ? (last1 - first1) : 0;
+		if (usbd.epBank0IsTransferComplete(ep) || usbd.epBank1IsTransferComplete(ep)) {
+			usbd.epAckPendingInterrupts(ep);
 		}
 	}
 
+	// Returns how many bytes are stored in the buffers
+	virtual uint32_t available() {
+		_recv();
+		return _rx_buffer.available();
+	}
+
+	virtual int peek() {
+		_recv();
+		return _rx_buffer.peek();
+	}
+
 	void release() {
-		// Release OUT EP
-		usbd.epBank0EnableTransferComplete(ep);
-		usbd.epBank0SetMultiPacketSize(ep, size);
-		usbd.epBank0SetByteCount(ep, 0);
-		usbd.epBank0ResetReady(ep);
+		usbd.epReleaseOutBank0(ep, size);
 	}
 
 private:
 	USBDevice_SAMD21G18x &usbd;
 
+	RingBuffer _rx_buffer;
+
 	const uint32_t ep;
 	const uint32_t size;
-	uint32_t current, incoming;
+	volatile uint32_t current, incoming;
 
 	volatile uint8_t *data0;
 	uint32_t first0;

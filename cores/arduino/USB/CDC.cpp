@@ -119,7 +119,7 @@ bool CDC_Setup(USBSetup &setup)
 			// auto-reset into the bootloader is triggered when the port, already
 			// open at 1200 bps, is closed. We check DTR state to determine if host
 			// port is open (bit 0 of lineState).
-			if (_usbLineInfo.dwDTERate == 1200 && (_usbLineInfo.lineState & 0x01) == 0)
+			if (_usbLineInfo.dwDTERate == 1200 && (_usbLineInfo.lineState & CDC_LINESTATE_DTR) == 0)
 			{
 				initiateReset(250);
 			}
@@ -138,6 +138,16 @@ bool CDC_Setup(USBSetup &setup)
 	}
 	return false;
 }
+
+/*
+Serial_::Serial_(USBDeviceClass &_usb) : PluggableUSBModule(3, 2, epType), usb(_usb), stalled(false)
+{
+  epType[0] = USB_ENDPOINT_TYPE_INTERRUPT | USB_ENDPOINT_IN(0);
+  epType[1] = USB_ENDPOINT_TYPE_BULK | USB_ENDPOINT_OUT(0);
+  epType[2] = USB_ENDPOINT_TYPE_BULK | USB_ENDPOINT_IN(0);
+  PluggableUSB().plug(this);
+}
+*/
 
 void Serial_::begin(uint32_t /* baud_count */)
 {
@@ -168,9 +178,11 @@ void Serial_::end(void)
 	memset((void *)&_usbLineInfo, 0, sizeof(_usbLineInfo));
 }
 
+int _serialPeek = -1;
+
 int Serial_::available(void)
 {
-	return usb.available(CDC_ENDPOINT_OUT);
+	return usb.available(CDC_ENDPOINT_OUT) + (_serialPeek != -1);
 }
 
 int Serial_::availableForWrite(void)
@@ -179,8 +191,6 @@ int Serial_::availableForWrite(void)
 	// always EP size - 1, because bank is flushed on every write
 	return (EPX_SIZE - 1);
 }
-
-int _serialPeek = -1;
 
 int Serial_::peek(void)
 {
@@ -218,6 +228,10 @@ size_t Serial_::readBytes(char *buffer, size_t length)
 void Serial_::flush(void)
 {
 	usb.flush(CDC_ENDPOINT_IN);
+}
+
+void Serial_::clear(void) {
+	usb.clear(CDC_ENDPOINT_IN);
 }
 
 size_t Serial_::write(const uint8_t *buffer, size_t size)
@@ -274,12 +288,12 @@ uint8_t Serial_::numbits()
 
 bool Serial_::dtr()
 {
-	return _usbLineInfo.lineState & 0x1;
+	return _usbLineInfo.lineState & CDC_LINESTATE_DTR;
 }
 
 bool Serial_::rts()
 {
-	return _usbLineInfo.lineState & 0x2;
+	return _usbLineInfo.lineState & CDC_LINESTATE_RTS;
 }
 
 // This operator is a convenient way for a sketch to check whether the
