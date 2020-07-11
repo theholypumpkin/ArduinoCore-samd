@@ -41,71 +41,68 @@ static void syncTCC(Tcc* TCCx) {
 }
 #endif
 
-extern uint32_t toneMaxFrequency;
-
 #if defined(__SAMD51__)
-#define PER_COUNTER 0xFF
+#define MAX_PERIOD 0xFF
 #else
-#define PER_COUNTER 0xFFFF
+#define MAX_PERIOD 0xFFFF
 #endif
 
-static inline uint32_t calcPrescaler(uint32_t frequency)
+static inline unsigned long calcPrescaler(uint32_t frequency, uint32_t &period)
 {
   //if it's a rest, set to 1Hz (below audio range)
   frequency = (frequency > 0 ? frequency : 1);
   //
   // Calculate best prescaler divider and comparator value for a 16 bit TC peripheral
-  uint32_t prescalerConfigBits;
-  uint32_t ccValue;
+  unsigned long prescalerConfigVal;
 
-  ccValue = toneMaxFrequency / frequency - 1;
-  prescalerConfigBits = TC_CTRLA_PRESCALER_DIV1;
+  period = F_CPU / frequency - 1;
+  prescalerConfigVal = TC_CTRLA_PRESCALER_DIV1_Val;
 
   uint8_t i = 0;
 
-  while (ccValue > PER_COUNTER)
+  while (period > MAX_PERIOD)
   {
-    ccValue = toneMaxFrequency / frequency / (2 << i) - 1;
-    i++;
     if (i == 4 || i == 6 || i == 8) //DIV32 DIV128 and DIV512 are not available
       i++;
+    period = F_CPU / frequency / (2 << i) - 1;
+    i++;
   }
 
   switch (i - 1)
   {
   case 0:
-    prescalerConfigBits = TC_CTRLA_PRESCALER_DIV2;
+    prescalerConfigVal = TC_CTRLA_PRESCALER_DIV2_Val;
     break;
 
   case 1:
-    prescalerConfigBits = TC_CTRLA_PRESCALER_DIV4;
+    prescalerConfigVal = TC_CTRLA_PRESCALER_DIV4_Val;
     break;
 
   case 2:
-    prescalerConfigBits = TC_CTRLA_PRESCALER_DIV8;
+    prescalerConfigVal = TC_CTRLA_PRESCALER_DIV8_Val;
     break;
 
   case 3:
-    prescalerConfigBits = TC_CTRLA_PRESCALER_DIV16;
+    prescalerConfigVal = TC_CTRLA_PRESCALER_DIV16_Val;
     break;
 
   case 5:
-    prescalerConfigBits = TC_CTRLA_PRESCALER_DIV64;
+    prescalerConfigVal = TC_CTRLA_PRESCALER_DIV64_Val;
     break;
 
   case 7:
-    prescalerConfigBits = TC_CTRLA_PRESCALER_DIV256;
+    prescalerConfigVal = TC_CTRLA_PRESCALER_DIV256_Val;
     break;
 
   case 9:
-    prescalerConfigBits = TC_CTRLA_PRESCALER_DIV1024;
+    prescalerConfigVal = TC_CTRLA_PRESCALER_DIV1024_Val;
     break;
 
   default:
     break;
   }
 
-  return prescalerConfigBits;
+  return prescalerConfigVal;
 }
 
 void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
@@ -116,10 +113,11 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
 #if defined(__SAMD51__)
   if (attr & (PIN_ATTR_PWM_E | PIN_ATTR_PWM_F | PIN_ATTR_PWM_G))
   {
-    duty = mapResolution(duty, 10, 8);
-    uint32_t prescalerConfigBits;
+    unsigned long prescalerConfigVal;
+    uint32_t period;
 
-    prescalerConfigBits = calcPrescaler(frequency);
+    prescalerConfigVal = calcPrescaler(frequency, period);
+    duty = map(duty, 0, 1024, 0, period);
 
     uint32_t tcNum = GetTCNumber(pinDesc.ulPWMChannel);
     uint8_t tcChannel = GetTCChannelNumber(pinDesc.ulPWMChannel);
@@ -149,7 +147,7 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
       while (TCx->COUNT8.SYNCBUSY.bit.ENABLE)
         ;
       // Set Timer counter Mode to 8 bits, normal PWM,
-      TCx->COUNT8.CTRLA.reg = TC_CTRLA_MODE_COUNT8 | prescalerConfigBits;
+      TCx->COUNT8.CTRLA.reg = TC_CTRLA_MODE_COUNT8 | TC_CTRLA_PRESCALER(prescalerConfigVal);
       TCx->COUNT8.WAVE.reg = TC_WAVE_WAVEGEN_NPWM;
 
       while (TCx->COUNT8.SYNCBUSY.bit.CC0)
@@ -158,8 +156,8 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
       TCx->COUNT8.CC[tcChannel].reg = (uint8_t)duty;
       while (TCx->COUNT8.SYNCBUSY.bit.CC0)
         ;
-      // Set PER to maximum counter value (resolution : 0xFF)
-      TCx->COUNT8.PER.reg = 0xFF;
+      // Set PER to calculated period
+      TCx->COUNT8.PER.reg = period;
       while (TCx->COUNT8.SYNCBUSY.bit.PER)
         ;
       // Enable TCx
@@ -181,7 +179,7 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
       while (TCCx->SYNCBUSY.bit.ENABLE)
         ;
       // Set prescaler
-      TCCx->CTRLA.reg = prescalerConfigBits | TCC_CTRLA_PRESCSYNC_GCLK;
+      TCCx->CTRLA.reg = TC_CTRLA_PRESCALER(prescalerConfigVal) | TCC_CTRLA_PRESCSYNC_GCLK;
 
       // Set TCx as normal PWM
       TCCx->WAVE.reg = TCC_WAVE_WAVEGEN_NPWM;
@@ -194,8 +192,8 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
       TCCx->CC[tcChannel].reg = (uint32_t)duty;
       while (TCCx->SYNCBUSY.bit.CC0 || TCCx->SYNCBUSY.bit.CC1)
         ;
-      // Set PER to maximum counter value (resolution : 0xFF)
-      TCCx->PER.reg = 0xFF;
+      // Set PER to calculated period
+      TCCx->PER.reg = period;
       while (TCCx->SYNCBUSY.bit.PER)
         ;
       // Enable TCCx
@@ -210,10 +208,10 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
 
   if ((attr & PIN_ATTR_PWM) == PIN_ATTR_PWM)
   {
-    duty = mapResolution(duty, 10, 16);
-    uint32_t prescalerConfigBits;
+    uint32_t prescalerConfigVal;
+    uint32_t period;
 
-    prescalerConfigBits = calcPrescaler(frequency);
+    prescalerConfigVal = calcPrescaler(frequency, period);
 
     uint32_t tcNum = GetTCNumber(pinDesc.ulPWMChannel);
     uint8_t tcChannel = GetTCChannelNumber(pinDesc.ulPWMChannel);
@@ -259,13 +257,14 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
     // Set PORT
     if (tcNum >= TCC_INST_NUM)
     {
+      duty = mapResolution(duty, 10, 16);
       // -- Configure TC
       Tc *TCx = (Tc *)GetTC(pinDesc.ulPWMChannel);
       // Disable TCx
       TCx->COUNT16.CTRLA.bit.ENABLE = 0;
       syncTC_16(TCx);
       // Set Timer counter Mode to 16 bits, normal PWM
-      TCx->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16 | TC_CTRLA_WAVEGEN_NPWM | prescalerConfigBits;
+      TCx->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16 | TC_CTRLA_WAVEGEN_NPWM | TC_CTRLA_PRESCALER(prescalerConfigVal);
       syncTC_16(TCx);
       // Set the initial value
       TCx->COUNT16.CC[tcChannel].reg = (uint32_t)duty;
@@ -276,10 +275,14 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
     }
     else
     {
+      duty = map(duty, 0, 1024, 0, period);
       // -- Configure TCC
       Tcc *TCCx = (Tcc *)GetTC(pinDesc.ulPWMChannel);
       // Disable TCCx
       TCCx->CTRLA.bit.ENABLE = 0;
+      syncTCC(TCCx);
+      // Set prescaler
+      TCCx->CTRLA.bit.PRESCALER = prescalerConfigVal;
       syncTCC(TCCx);
       // Set TCCx as normal PWM
       TCCx->WAVE.reg |= TCC_WAVE_WAVEGEN_NPWM;
@@ -287,8 +290,8 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
       // Set the initial value
       TCCx->CC[tcChannel].reg = (uint32_t)duty;
       syncTCC(TCCx);
-      // Set PER to maximum counter value (resolution : 0xFFFF)
-      TCCx->PER.reg = 0xFFFF;
+      // Set PER to calculated period
+      TCCx->PER.reg = period;
       syncTCC(TCCx);
       // Enable TCCx
       TCCx->CTRLA.bit.ENABLE = 1;
