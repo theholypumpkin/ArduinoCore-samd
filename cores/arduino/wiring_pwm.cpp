@@ -47,6 +47,9 @@ static void syncTCC(Tcc* TCCx) {
 #define MAX_PERIOD 0xFFFF
 #endif
 
+// API uses 10 bit resolution
+#define PWM_API_RESOLUTION 10
+
 static inline unsigned long calcPrescaler(uint32_t frequency, uint32_t &period)
 {
   //if it's a rest, set to 1Hz (below audio range)
@@ -67,6 +70,14 @@ static inline unsigned long calcPrescaler(uint32_t frequency, uint32_t &period)
     period = F_CPU / frequency / (2 << i) - 1;
     i++;
   }
+
+  #if defined(__SAMD51__)
+  period = MAX_PERIOD;
+  #else
+  // Ensure that our period does not erode the API resolution
+  if(period < (1<<PWM_API_RESOLUTION))
+    period = (1<<PWM_API_RESOLUTION) - 1;
+  #endif
 
   switch (i - 1)
   {
@@ -117,7 +128,7 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
     uint32_t period;
 
     prescalerConfigVal = calcPrescaler(frequency, period);
-    duty = map(duty, 0, 1024, 0, period);
+    duty = map(duty, 0, (1<<PWM_API_RESOLUTION), 0, period);
 
     uint32_t tcNum = GetTCNumber(pinDesc.ulPWMChannel);
     uint8_t tcChannel = GetTCChannelNumber(pinDesc.ulPWMChannel);
@@ -275,7 +286,7 @@ void pwm(uint32_t outputPin, uint32_t frequency, uint32_t duty)
     }
     else
     {
-      duty = map(duty, 0, 1024, 0, period);
+      duty = map(duty, 0, (1<<PWM_API_RESOLUTION), 0, period);
       // -- Configure TCC
       Tcc *TCCx = (Tcc *)GetTC(pinDesc.ulPWMChannel);
       // Disable TCCx
