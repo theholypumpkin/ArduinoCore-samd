@@ -107,6 +107,25 @@ static const uint8_t A5  = PIN_A5;
 static const uint8_t DAC0 = PIN_DAC0;
 #define ADC_RESOLUTION		12
 
+/*
+ * Digital pins
+ */
+
+#define D0 (0ul)
+#define D1 (1ul)
+#define D2 (2ul)
+#define D3 (3ul)
+#define D4 (4ul)
+#define D5 (5ul)
+#define D6 (6ul)
+#define D7 (7ul)
+#define D8 (8ul)
+#define D9 (9ul)
+#define D10 (10ul)
+#define D11 (11ul)
+#define D12 (12ul)
+#define D13 (13ul)
+
 // Other pins
 #define PIN_ATN              (38ul)
 static const uint8_t ATN = PIN_ATN;
