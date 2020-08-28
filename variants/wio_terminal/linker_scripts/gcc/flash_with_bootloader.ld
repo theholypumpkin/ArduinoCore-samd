@@ -200,7 +200,7 @@ SECTIONS
 	 * used for linker to calculate size of stack sections, and assign
 	 * values to stack symbols later */
 	.stack_dummy (COPY):
-	{
+	{	__StackStart = .;
 		*(.stack*)
 	} > RAM
 
