@@ -561,7 +561,6 @@ void analogWrite(uint32_t pin, uint32_t value)
 				while (TCCx->SYNCBUSY.bit.CTRLB);
 				}
 		}
-
 		return;
 	}
 	  
