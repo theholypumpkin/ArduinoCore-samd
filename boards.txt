@@ -20,6 +20,7 @@ menu.opt=Optimize
 menu.maxqspi=Max QSPI
 menu.usbstack=USB Stack
 menu.debug=Debug
+menu.txrxled=TX/RX LED
 
 # Seeed Wio Terminal (SAMD51)
 # ------------------------------
@@ -83,6 +84,9 @@ seeed_wio_terminal.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB
 seeed_wio_terminal.menu.debug.off=Off
 seeed_wio_terminal.menu.debug.on=On
 seeed_wio_terminal.menu.debug.on.build.flags.debug=-g -DDEBUG=1
+seeed_wio_terminal.menu.txrxled.on=On
+seeed_wio_terminal.menu.txrxled.off=Off
+seeed_wio_terminal.menu.txrxled.on.build.flags.txrxled=-DTXRXLED_ENABLE
 
 # Seeed Femto M0 (SAMD21)
 # ------------------------------
