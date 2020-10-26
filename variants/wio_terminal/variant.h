@@ -78,14 +78,16 @@ extern "C"
 // #define digitalPinToTimer(P)
 
 // LEDs
-#define PIN_LED_13 (13u)
+#define PIN_LED_13		(13u)
+#define PIN_LED			PIN_LED_13
+#define PIN_LED2		PIN_LED_13
+#define PIN_LED3		PIN_LED_13
+#define LED_BUILTIN		PIN_LED_13
+#define PIN_NEOPIXEL	PIN_LED_13
+#if defined(TXRXLED_ENABLE)
 #define PIN_LED_RXL (13u)
 #define PIN_LED_TXL (13u)
-#define PIN_LED PIN_LED_13
-#define PIN_LED2 PIN_LED_RXL
-#define PIN_LED3 PIN_LED_TXL
-#define LED_BUILTIN PIN_LED_13
-#define PIN_NEOPIXEL (13u)
+#endif // TXRXLED_ENABLE
 
 //Digital PINs
 #define D0 (0ul)
