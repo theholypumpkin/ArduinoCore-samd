@@ -8,3 +8,6 @@
 	path = libraries/Seeed_Arduino_LCD
 	url = https://github.com/Seeed-Studio/Seeed_Arduino_LCD.git
 
+[submodule "libraries/Seeed_Arduino_FreeRTOS"]
+	path = libraries/Seeed_Arduino_FreeRTOS
+	url = https://github.com/Seeed-Studio/Seeed_Arduino_FreeRTOS
