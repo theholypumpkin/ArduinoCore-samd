@@ -20,7 +20,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5---3rd-party-Hardware-specification
 
 name=Seeed SAMD (32-bits ARM Cortex-M0+ and Cortex-M4) Boards
-version=1.8.0
+version=1.8.1
 
 # Compile variables
 # -----------------
@@ -61,6 +61,7 @@ build.flags.maxspi=
 build.flags.maxqspi=
 build.flags.usbstack=
 build.flags.debug=
+build.flags.role=
 build.flags.txrxled=
 
 # These can be overridden in platform.local.txt
