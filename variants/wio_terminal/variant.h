@@ -265,11 +265,19 @@ static const uint8_t DAC1 = PIN_DAC1;
  */
 
 // Serial1
+#if ROLE
+#define PIN_SERIAL1_RX (40ul)
+#define PIN_SERIAL1_TX (41ul)
+#define PAD_SERIAL1_RX (SERCOM_RX_PAD_1)
+#define PAD_SERIAL1_TX (UART_TX_PAD_0)
+#define SERCOM_SERIAL1 sercom4
+#else
 #define PIN_SERIAL1_RX (41ul)
 #define PIN_SERIAL1_TX (40ul)
 #define PAD_SERIAL1_RX (SERCOM_RX_PAD_1)
 #define PAD_SERIAL1_TX (UART_TX_PAD_0)
 #define SERCOM_SERIAL1 sercom2
+#endif
 
 // Serial2
 #define PIN_SERIAL2_RX (83ul)
