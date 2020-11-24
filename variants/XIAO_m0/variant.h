@@ -125,6 +125,10 @@ static const uint8_t MOSI = PIN_SPI_MOSI ;
 static const uint8_t MISO = PIN_SPI_MISO ;
 static const uint8_t SCK  = PIN_SPI_SCK ;
 
+// /*
+//  * RTL8720D Interfaces
+//  */
+#define RTL8720D_CHIP_PU        (1ul)
 
 /*
  * Wire Interfaces
