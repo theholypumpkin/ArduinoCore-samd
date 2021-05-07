@@ -260,10 +260,10 @@ void InterruptHandler(uint32_t i)
   {
 	if ((EIC->INTFLAG.reg & ISRlist[i]) != 0)
 	{
-	  // Call the callback function
-	  ISRcallback[i]();
 	  // Clear the interrupt
 	  EIC->INTFLAG.reg = ISRlist[i];
+	  // Call the callback function
+	  ISRcallback[i]();
 	}
   }
 }
@@ -359,10 +359,10 @@ void EIC_Handler(void)
   {
     if ((EIC->INTFLAG.reg & ISRlist[i]) != 0)
     {
+	  // Clear the interrupt
+      EIC->INTFLAG.reg = ISRlist[i];
       // Call the callback function
       ISRcallback[i]();
-      // Clear the interrupt
-      EIC->INTFLAG.reg = ISRlist[i];
     }
   }
 }
