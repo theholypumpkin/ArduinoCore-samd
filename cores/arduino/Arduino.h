@@ -170,7 +170,7 @@ static inline unsigned char __interruptsStatus(void)
 
 // USB
 #ifdef USE_TINYUSB
-#include "Adafruit_TinyUSB_Core.h"
+#include "Adafruit_USBD_CDC.h"
 #else
 #include "USB/USBDesc.h"
 #include "USB/USBCore.h"

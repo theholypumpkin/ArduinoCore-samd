@@ -31,10 +31,6 @@ extern uint32_t tud_cdc_n_write_flush (uint8_t itf);
 static void __empty()
 {
 // Empty
-#if defined(USE_TINYUSB)
-  tud_task();
-  tud_cdc_n_write_flush(0);
-#endif
 }
 void yield(void) __attribute__((weak, alias("__empty")));
 
