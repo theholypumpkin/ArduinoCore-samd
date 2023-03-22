@@ -107,6 +107,18 @@ static const uint8_t DAC0 = PIN_DAC0;
 
 #define ADC_RESOLUTION		12
 
+#define D0  (0u)
+#define D1  (1u)
+#define D2  (2u)
+#define D3  (3u)
+#define D4  (4u)
+#define D5  (5u)
+#define D6  (6u)
+#define D7  (7u)
+#define D8  (8u)
+#define D9  (9u)
+#define D10 (10u)
+
 /*
  * SPI Interfaces
  */
