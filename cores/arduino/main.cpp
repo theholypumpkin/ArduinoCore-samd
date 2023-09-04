@@ -69,8 +69,7 @@ int main(void)
   delay(1);
 
 #if defined(USE_TINYUSB)
-  Adafruit_TinyUSB_Core_init();
-  tinyusb_task();
+  TinyUSB_Device_Init(0);
 #elif defined(USBCON)
   USBDevice.init();
   USBDevice.attach();
