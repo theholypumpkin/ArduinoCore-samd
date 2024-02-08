@@ -145,6 +145,8 @@ static const uint8_t SCK  = PIN_SPI_SCK ;
 /*
  * Wire Interfaces
  */
+#ifndef USART_INTERFACE_ALT
+
 #define WIRE_INTERFACES_COUNT 1
 
   // "external" public i2c interface
@@ -154,6 +156,12 @@ static const uint8_t SCK  = PIN_SPI_SCK ;
 #define WIRE_IT_HANDLER      SERCOM2_Handler
 static const uint8_t SDA = PIN_WIRE_SDA;
 static const uint8_t SCL = PIN_WIRE_SCL;
+
+#else
+
+#define WIRE_INTERFACES_COUNT 0
+
+#endif
 
 // USB
 // ---
@@ -188,6 +196,19 @@ extern Uart Serial1;
 #define PIN_SERIAL1_RX       (7ul)
 #define PAD_SERIAL1_TX       (UART_TX_PAD_0)
 #define PAD_SERIAL1_RX       (SERCOM_RX_PAD_1)
+
+#endif // not NO_USART_INTERFACE
+
+#ifdef USART_INTERFACE_ALT
+
+#include "Uart.h"
+
+// Serial2
+extern Uart Serial2;
+#define PIN_SERIAL2_TX       (2ul)
+#define PIN_SERIAL2_RX       (3ul)
+#define PAD_SERIAL2_TX       (SERCOM_ALT_2_TX_PAD_2)
+#define PAD_SERIAL2_RX       (SERCOM_ALT_2_RX_PAD_3)
 
 #endif // not NO_USART_INTERFACE
 
