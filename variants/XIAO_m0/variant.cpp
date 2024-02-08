@@ -73,3 +73,14 @@ void SERCOM4_Handler()
 }
 
 #endif
+
+#ifdef USART_INTERFACE_ALT
+
+Uart Serial2( &sercom2, PIN_SERIAL2_RX, PIN_SERIAL2_TX, PAD_SERIAL2_RX, PAD_SERIAL2_TX ) ;
+
+void SERCOM2_Handler()
+{
+  Serial2.IrqHandler();
+}
+
+#endif
